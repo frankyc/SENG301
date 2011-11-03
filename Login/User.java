@@ -5,13 +5,15 @@ public class User{
 
 	private String UserName;
 	private String Password;
-	private String UserClass;
-
+	private int Permissions;
+	private static final int INSTRUCTOR = 1;
+	private static final int TA = 2;
+	private static final int STUDENT = 3;
 	public User(){
-		this("","","");
+		this("","",0);
 	}
 
-	public User(String username, String password, String T) {
+	public User(String username, String password, int T) {
 		setUsername(username);
 		setPassword(password);
 		setType(T);
@@ -22,11 +24,11 @@ public class User{
 	public void setPassword(String pass){
 		Password = pass;
 	}
-	public void setType(String T){
-		UserClass = T;
+	public void setType(int T){
+		Permissions = T;
 	}
-	public String getType(){
-		return UserClass;
+	public int getPermissions(){
+		return Permissions;
 	}
 	public String getName(){
 		return UserName;
