@@ -1,8 +1,10 @@
-package Login;
+package Management;
 
 
 import java.io.*;
 import java.util.Scanner;
+
+import Users.*;
 
 	/*//conventions
 	 * variables = int varF
@@ -11,33 +13,37 @@ import java.util.Scanner;
 	 * function = varables*/
 public class LoginManager 
 {
+	//Path Name can be changed anytime.
+	private static final String LOGINPATH = "../Assignment4/src/LoginListEncrypted.txt";
 
 	private User users;
 	private boolean loggedOn = false;
 	//Call this to GetUser Validation
 	public User ValidateLogin(String username,String password) 
 	{
-		User List;
 		File Logs = null;
 		Scanner o_in = null;
-		String newPassword = mD5Salted(password);
-		users = new User(username,newPassword,0);
+		String saltedPassword = mD5Salted(password),dBUsername,dBPassword;
+		int dBPermission;
 		
-		Logs = new File("../Assignment4/src/LoginList.txt");
+		Logs = new File(LOGINPATH);
 		
 		try {
 			o_in = new Scanner(Logs);
 		}catch (FileNotFoundException a){
-			System.err.println("/Assignment4/src/LoginList.txt was not found");
+			System.err.println(LOGINPATH +" was not found");
 		}catch (IOException e) {
 			System.err.println("File Not Found");
 			e.printStackTrace();
 		}	
 		while(LoggedIn() == false && o_in.hasNext()){
-			List = new User(o_in.next(),o_in.next(),o_in.nextInt());
-			if(List.getName().compareTo(users.getName()) == 0 && List.getPassword().compareTo(users.getPassword()) == 0){
+			dBUsername = o_in.next();
+			dBPassword = o_in.next();
+			dBPermission = o_in.nextInt();
+			if(dBUsername.compareTo(username) == 0 && dBPassword.compareTo(saltedPassword) == 0){
 					loggedOn = true;
-					users = List;
+					getUser(dBPermission);
+					users.setUsername(username);
 					System.out.println(users.getPermissions());
 					return users;
 			}
@@ -73,7 +79,7 @@ public class LoginManager
 		    return null;
 	}
 	
-	//Using MD5 algorthm multiple times with salted methods to encrypt
+	//Using MD5 algorithm multiple times with salted methods to encrypt
 	public String mD5Salted(String password){
 		String newPassword = mD5(password);
 		newPassword.concat(password);
@@ -81,6 +87,19 @@ public class LoginManager
 		newPassword = newPassword.concat("SENG301");
 		newPassword = mD5(newPassword);
 		return newPassword;
+		
+	}
+	
+	private void getUser(int permission){
+		switch(permission){
+		case 1: users = new Instructor();
+		break;
+		case 2: users = new TA();
+		break;
+		case 3: users = new Student();
+		break;
+		default: users = null;
+		}
 		
 	}
 
