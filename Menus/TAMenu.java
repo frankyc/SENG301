@@ -26,11 +26,14 @@ public class TAMenu extends Menu implements TeachingStaff
 
 	public void run()
 	{
-		display();
+		while( selectedMenuItem != -1 )
+		{
+			display();
 
-		getInput();
+			getInput();
 
-		processInput();
+			processInput();
+		}
 	}
 
 
