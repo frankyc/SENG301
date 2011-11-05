@@ -14,7 +14,7 @@ import Users.*;
 public class LoginManager 
 {
 	//Path Name can be changed anytime.
-	private static final String LOGINPATH = "../Assignment4/src/LoginListEncrypted.txt";
+	private static final String LOGINPATH = System.getProperty( "user.dir" ) + "/LoginListEncrypt.txt";
 
 	private User users;
 	private boolean loggedOn = false;
