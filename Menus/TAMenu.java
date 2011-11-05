@@ -10,10 +10,13 @@ package Menus;
 import Users.*;
 import java.io.*;
 
-public class TAMenu extends Menu implements TeachingStaff
+public class TAMenu extends TeachingStaffMenu
 {
 	private TA ta;
 	int selectedMenuItem;
+
+	private static final int QUIT = -1;
+	private static final int INVALID = -2;
 
 	public TAMenu( TA t )
 	{
@@ -21,16 +24,21 @@ public class TAMenu extends Menu implements TeachingStaff
 
 		String[] newMenuItems = {"First Item", "Second Item", "Third Item"};
 
-		menuItems = newMenuItems;
+		menuItems = joinMenuItems( newMenuItems );
+
+		selectedMenuItem = 0;
 	}
 
 	public void run()
 	{
-		while( selectedMenuItem != -1 )
+		while( selectedMenuItem != QUIT )
 		{
 			display();
 
-			getInput();
+			if( selectedMenuItem == INVALID )
+				getInput( true /* Invalid choice */ );
+			else
+				getInput();
 
 			processInput();
 		}
@@ -41,13 +49,13 @@ public class TAMenu extends Menu implements TeachingStaff
 	{
 		clearScreen();
 
-		outputMenuItems( true );	
+		outputMenuItems( true /* Number items */ );	
 	}
 
 
 	public void getInput()
 	{
-		getInput( false );
+		getInput( false /* Invalid choice */ );
 	}
 
 
@@ -78,7 +86,7 @@ public class TAMenu extends Menu implements TeachingStaff
 		{
 			if( input.compareTo( "q" ) == 0 )
 			{
-				selectedMenuItem = -1;
+				selectedMenuItem = QUIT;
 				return;
 			}
 
@@ -89,7 +97,7 @@ public class TAMenu extends Menu implements TeachingStaff
 		}
 		catch( NumberFormatException e )
 		{
-			getInput( true );
+			selectedMenuItem = INVALID;
 		}
 	}
 
