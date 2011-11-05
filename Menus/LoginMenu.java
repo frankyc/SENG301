@@ -58,12 +58,6 @@ public class LoginMenu extends Menu
 	}
 
 
-	public void getInput()
-	{
-		getInput( false );
-	}
-
-
 	public void getInput( boolean invalid )
 	{
 		Menu.clearScreen();
@@ -90,7 +84,10 @@ public class LoginMenu extends Menu
 		switch( user.getPermissions() )
 		{
 			case User.INSTRUCTOR:
-				System.out.println( "You're a instructor!" );
+				InstructorMenu instructorMenu = new InstructorMenu( (Instructor)user );
+
+				instructorMenu.run();
+				
 				break;
 
 			case User.TA:

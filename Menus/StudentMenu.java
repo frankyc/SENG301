@@ -21,24 +21,6 @@ public class StudentMenu extends Menu
 		menuItem = {"First Item", "Second Item", "Third Item"};
 	}
 
-	public void run()
-	{
-
-	}
-
-
-	public void display()
-	{
-
-	}
-
-
-	public void getInput()
-	{
-
-	}
-
-
 	public void processInput()
 	{
 
