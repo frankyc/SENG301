@@ -36,6 +36,10 @@ public abstract class Menu
 	}
 
 
+	/**
+	 * Prompts the user to press enter and waits for them to
+	 * Will absorb any input before the enter press
+	 */
 	public static void pressEnter()
 	{
 		System.out.println( "<< Press Enter to Continue >>" );
@@ -46,6 +50,12 @@ public abstract class Menu
 	}
 
 
+	/**
+	 * Outputs menu items with or without prepending the menu-item nuber in front
+	 *
+	 * @param numberItems - If true will prepend numbers in front of each menu item starting with 0.
+	 * 			If false will output each menu item on a new line with no modification
+	 */
 	protected void outputMenuItems( boolean numberItems )
 	{
 		for( int i = 0; i < this.menuItems.length; i++ )
