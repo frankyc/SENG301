@@ -10,9 +10,8 @@
 package Menus;
 import Users.*;
 
-public class InstructorMenu extends Menu implements TeachingStaff
+public class InstructorMenu extends TeachingStaffMenu
 {
-	private String[] menuItems;
 	private Instructor instructor;
 
 
@@ -20,35 +19,20 @@ public class InstructorMenu extends Menu implements TeachingStaff
 	{
 		instructor = i;
 
-		menuItem = 
+		String[] newMenuItems = 
 		{
 			"First Item",
 			"Second Item",
 			"Third Item"
 		};
-	}
 
-
-	public void run()
-	{
-
-	}
-
-
-	public void display()
-	{
-
-	}
-
-
-	public void getInput()
-	{
-
+		menuItems = joinMenuItems( newMenuItems );
 	}
 
 
 	public void processInput()
 	{
+		System.out.println( "Selected!" );
 
 	}
 }

@@ -10,84 +10,24 @@ package Menus;
 import Users.*;
 import java.io.*;
 
-public class TAMenu extends Menu implements TeachingStaff
+public class TAMenu extends TeachingStaffMenu
 {
 	private TA ta;
-	int selectedMenuItem;
 
 	public TAMenu( TA t )
 	{
 		ta = t;
 
-		String[] newMenuItems = {"First Item", "Second Item", "Third Item"};
-
-		menuItems = newMenuItems;
-	}
-
-	public void run()
-	{
-		display();
-
-		getInput();
-
-		processInput();
-	}
-
-
-	public void display()
-	{
-		clearScreen();
-
-		outputMenuItems( true );	
-	}
-
-
-	public void getInput()
-	{
-		getInput( false );
-	}
-
-
-	private void getInput( boolean invalid )
-	{
-		if( invalid )
-			System.out.println( "Invalid option selected." );
-
-		System.out.println( "Please enter a menu option (q to logout): " );
-
-		BufferedReader in = new BufferedReader( new InputStreamReader(System.in) );
-
-		String input = null;
-
-		// Get the raw input
-		try
+		String[] newMenuItems =
 		{
-			input = in.readLine();
-		}
-		catch( IOException e )
-		{
-			System.out.println( "ERROR: Couldn't read menu item input.  Please run the program again." );
-			System.exit(1);
-		}
+			"First Item",
+			"Second Item",
+			"Third Item"
+		};
 
-		// Check input for errors
-		try
-		{
-			if( input.compareTo( "q" ) == 0 )
-			{
-				selectedMenuItem = -1;
-				return;
-			}
+		menuItems = joinMenuItems( newMenuItems );
 
-			selectedMenuItem = Integer.parseInt( input );
-
-			if( selectedMenuItem < 0 || selectedMenuItem >= menuItems.length )
-				throw new NumberFormatException();
-		}
-		catch( NumberFormatException e )
-		{
-			getInput( true );
-		}
+		selectedMenuItem = 0;
 	}
 
 

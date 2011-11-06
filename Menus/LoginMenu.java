@@ -58,16 +58,10 @@ public class LoginMenu extends Menu
 	}
 
 
-	public void getInput()
-	{
-		getInput( false );
-	}
-
-
 	public void getInput( boolean invalid )
 	{
 		Menu.clearScreen();
-		
+
 		if( invalid )
 			System.out.println( "Invalid ID or password.  Please try again.\n");
 		else
@@ -82,7 +76,7 @@ public class LoginMenu extends Menu
 	public void processInput()
 	{
 		User user = null;
-		
+
 		while( (user = loginManager.ValidateLogin( username, password )) == null )
 			getInput( true );
 
@@ -90,9 +84,12 @@ public class LoginMenu extends Menu
 		switch( user.getPermissions() )
 		{
 			case User.INSTRUCTOR:
-				System.out.println( "You're a instructor!" );
+				InstructorMenu instructorMenu = new InstructorMenu( (Instructor)user );
+
+				instructorMenu.run();
+				
 				break;
-			
+
 			case User.TA:
 				TAMenu taMenu = new TAMenu( (TA)user );
 
@@ -104,7 +101,7 @@ public class LoginMenu extends Menu
 				System.out.println( "You're a student!" );
 				break;
 			default:
-				System.out.println( "Whoops!  You're nothing!" );
+				System.out.println( "Whoops!  You're nothing!  We should get around to fixing that probably.  Just sayin'..." );
 		}
 	}
 
@@ -113,11 +110,11 @@ public class LoginMenu extends Menu
 	{
 		try
 		{
-		System.out.print( "Please enter your ID: " );
+			System.out.print( "Please enter your ID: " );
 
-		BufferedReader in = new BufferedReader( new InputStreamReader( System.in ) );
+			BufferedReader in = new BufferedReader( new InputStreamReader( System.in ) );
 
-		username = in.readLine();
+			username = in.readLine();
 		}
 		catch( IOException e )
 		{
@@ -125,20 +122,11 @@ public class LoginMenu extends Menu
 		}
 	}
 
-	
+
 	private void getPassword()
 	{
-		try
-		{
-		BufferedReader in = new BufferedReader( new InputStreamReader( System.in ) );
-		
 		System.out.print( "Please enter your password: " );
 
-		password = in.readLine();
-		}
-		catch( IOException e )
-		{
-			System.out.println( "Unable to read in password.  Please restart the program and try again." );
-		}
+		password = new String( System.console().readPassword() );
 	}
 }
