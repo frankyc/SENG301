@@ -1,3 +1,8 @@
+/*
+ * SENG 301: Assignment 4
+ * Franky Cheung; Colin Williams
+ */
+
 package Management;
 
 

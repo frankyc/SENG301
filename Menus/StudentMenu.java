@@ -18,7 +18,7 @@ public class StudentMenu extends Menu
 	{
 		student = s;
 
-		menuItem = {"First Item", "Second Item", "Third Item"};
+		menuItems = new String[] {"First Item", "Second Item", "Third Item"};
 	}
 
 	public void processInput()
