@@ -13,23 +13,6 @@ import java.util.Vector;
 
 public class StudentDbms extends UserDbms
 {
-	/*public static void main( String[] args )
-	{
-		StudentDbms iDbms = new StudentDbms();
-
-		if( iDbms.exists( "Admin" ) )
-			System.out.println( "He exists! (correct result...)" );
-		else
-			System.out.println( "He doesn't exist.  Umm.  We'll get right on that..." );
-
-		if( !iDbms.add( "Admin3", "SENG301" ) )
-			System.out.println( "Admin3 exists!" );
-		else
-			System.out.println( "Ummm.... Wtf?" );
-	}*/
-
-
-
 	/**
 	 * Forms a new StudentDbms, prepping it with a path to the DB file and lines read in
 	 * Creates a new, blank DB file if it doesn't already exist

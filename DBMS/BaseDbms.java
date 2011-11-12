@@ -258,6 +258,10 @@ public abstract class BaseDbms
 	protected File dbFile;
 	protected String[] dbLines;
 
+	/**
+	 * Reads in the lines of the database file to the dbLines variable
+	 * for manipulation
+	 */
 	protected void readDbFile()
 	{
 		Vector<String> lines = new Vector<String>();
@@ -290,6 +294,9 @@ public abstract class BaseDbms
 
 
 
+	/**
+	 * Writes the database lines stored in memory to the database file
+	 */
 	protected void writeLinesToFile()
 	{
 		try {
@@ -311,6 +318,11 @@ public abstract class BaseDbms
 	}
 
 
+	/**
+	 * Creates a new database file and the folder structure leading up to it
+	 *
+	 * @param dbFile - The database file to create
+	 */
 	protected void createDbFile( File dbFile ) throws IOException
 	{
 		dbFile.getParentFile().mkdirs();
