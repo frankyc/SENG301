@@ -7,10 +7,11 @@ public class CourseAssignment {
 	private Course c;
 	private String description;
 	private Date dueDate;
-	private static int assignmentNumber =0;
+	private int assignmentNumber =0;
 	private boolean assignmentVisable;
 	private boolean gradesVisable;
-	
+	private boolean commentVisable;
+
 	public CourseAssignment(){
 		c = null;
 		description = "N/A";
@@ -18,5 +19,36 @@ public class CourseAssignment {
 		assignmentNumber = 0;
 		assignmentVisable = false;
 		gradesVisable = false;
+		commentVisable = false;
 	}
+	
+	public CourseAssignment(Course cor,String desc,Date date,int assNum,boolean assVis,boolean gradeVis){
+		c = cor;
+		description = desc;
+		dueDate = date;
+		assignmentNumber = assNum;
+		assignmentVisable = assVis;
+		gradesVisable = gradeVis;
+	}
+
+	protected void setGradeVisability(boolean T_F){
+		gradesVisable = T_F;
+	}
+	protected void setCommentVisability(boolean T_F){
+		commentVisable = T_F;
+	}
+	protected boolean getCommentVisabiltiy(){
+		return commentVisable;
+	}
+	
+	public void setAssignmentVisable(boolean T_F){
+		assignmentVisable = T_F;
+	}
+	protected void setDueDate(Date newDue){
+		dueDate = newDue;
+	}
+	public void updateDescription(String newDesc){
+		description = newDesc;
+	}
+
 }
