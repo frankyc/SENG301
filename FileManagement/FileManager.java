@@ -10,6 +10,7 @@ package FileManagement;
 
 import java.io.*;
 import java.util.Vector;
+import java.util.regex.*;
 
 public class FileManager
 {
@@ -122,6 +123,18 @@ public class FileManager
 		if( !downloaded.exists() )
 		{
 			System.out.println( "ERROR: Downloaded file doesn't exist!" );
+			System.exit(1);
+		}
+
+
+		// Deleting submitted file
+		System.out.println( "Deleting submitted file..." );
+
+		fm.deleteSubmission( "CPSC471", 1, false, "10040377" );
+
+		if( (new File( fm.basePath + "/CPSC471/1/OnTime/10040377-Grades.txt" ) ).exists() )
+		{
+			System.out.println( "Submission delete failed!" );
 			System.exit(1);
 		}
 
@@ -366,6 +379,39 @@ public class FileManager
 			System.out.println( "ERROR copying file." );
 			e.printStackTrace();
 			System.exit(1);
+		}
+	}
+
+
+
+
+	/**
+	 * Deletes a submitted file for a student
+	 *
+	 * @param course - The course in which to look for the file
+	 * @param assignNum - The assignment number too look for the file
+	 * @param late - Whether the assignment was late or not
+	 * @param id - The id of the student to delete the file
+	 */
+	public void deleteSubmission( String course, int assignNum, boolean late, String id )
+	{
+		String lateFolder = null;
+
+		if( late )
+			lateFolder = "Late";
+		else
+			lateFolder = "OnTime";
+
+		File destDir = new File( basePath + course + "/" + assignNum + "/" + lateFolder + "/" );
+
+		File[] files = destDir.listFiles();
+
+		String pattern = "^" + id + ".*";
+
+		for( int i = 0; i < files.length; i++ )
+		{
+			if( Pattern.compile(pattern).matcher(files[i].getName()).find() )
+				files[i].delete();
 		}
 	}
 }
