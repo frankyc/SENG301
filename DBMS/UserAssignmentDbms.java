@@ -179,4 +179,37 @@ public class UserAssignmentDbms extends BaseDbms
 
 		throw new AssignmentNotExistException();
 	}
+
+
+
+
+	/**
+	 * Removes an assignment submission from the DBMS
+	 *
+	 * @param id - The ID of the student to remove the submission for
+	 */
+	public void deleteSubmission( String id ) throws AssignmentNotExistException
+	{
+		String[] newDbLines = new String[dbLines.length-1];
+
+		int i = 0;
+		int j = 0;
+
+		for( ; j < newDbLines.length; i++, j++ )
+		{
+			String[] line = dbLines[i].split( "\t" );
+
+			if( line[0].compareTo( id ) != 0 )
+				newDbLines[j] = dbLines[i];
+			else
+				j--;
+		}
+
+		if( i < dbLines.length - 1 )
+			throw new AssignmentNotExistException();
+
+		dbLines = newDbLines;
+
+		writeLinesToFile();
+	}
 }
