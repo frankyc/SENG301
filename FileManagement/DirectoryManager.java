@@ -29,7 +29,7 @@ public class DirectoryManager
 		File file = null;
 
 		if( !(file = new File(basePath)).exists() )
-			basePath.mkdirs();
+			file.mkdirs();
 	}
 
 
