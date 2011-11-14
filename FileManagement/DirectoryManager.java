@@ -26,7 +26,9 @@ public class DirectoryManager
 
 		basePath = System.getProperty( "user.id" ) + "/res/" + instructorId + "/";
 
-		if( !(new File(basePath)).exists() )
+		File file = null;
+
+		if( !(file = new File(basePath)).exists() )
 			basePath.mkdirs();
 	}
 

@@ -109,12 +109,57 @@ public abstract class BaseDbms
 				System.out.println( "User Assignment update NOT successful." );
 				System.exit(1);
 			}
+
+
+			System.out.println( "Deleting non-existent assignment..." );
+
+			try
+			{
+				ua.deleteSubmission( "NOTEXISTS", false );
+			}
+			catch( AssignmentNotExistException e )
+			{
+				System.out.println( "Assignment doesn't exist.  Great! :D" );
+			}
+
+
+			try
+			{
+				ua.deleteSubmission( String.valueOf(i), false );
+			}
+			catch( AssignmentNotExistException e )
+			{
+				System.out.println( "Umm...it should still exist here." );
+				System.exit(1);
+			}
+
+			System.out.println( "Deleting user assignment from DB..." );
+
+			if( ua.exists( String.valueOf(i), false ) )
+			{
+				System.out.println( "Submission delete failed!" );
+				System.exit(1);
+			}
+
+			System.out.println( "User assignment delete successful." );
+
+			try
+			{
+				System.out.println( "Deleting non-existant assignment..." );
+
+				ua.deleteSubmission( String.valueOf(i), false );
+			}
+			catch( AssignmentNotExistException e )
+			{
+				System.out.println( "EXCEPTION THROWN: This is correct behaviour.  Cool." );
+			}
 		}
 		catch( AssignmentNotExistException e )
 		{
 			System.out.println( "USER ASSIGNMENT DOESN'T EXIST. User Assignment update failed." );
 			System.exit(1);
 		}
+
 
 		System.out.println( "Testing of -UserAssignmentDbms- successful\n#########\n\n" );
 
