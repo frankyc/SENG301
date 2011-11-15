@@ -56,7 +56,7 @@ public class UserAssignmentDbms extends BaseDbms
 	 * @param late - Whether the assignment hand-in is past the due date
 	 * @param grade - The grade for the assignment
 	 */
-	public void update( String id, boolean late, String grade )
+	public void add( String id, boolean late )
 	{
 		update( id, late, grade, "-" );
 	}
