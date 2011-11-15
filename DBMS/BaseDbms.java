@@ -41,7 +41,7 @@ public abstract class BaseDbms
 		Calendar due = new GregorianCalendar();
 		due.set( 2011, 11, 29, 14, 0 );
 		
-		ad.update( i, false, false, false, "Assignment " + i + ".  A test.", due );
+		ad.add( false, false, false, "Assignment " + i + ".  A test.", due );
 
 		if( ad.dbLines.length > numLines )
 			System.out.println( "Assignment " + i + " successfully added.\n" );
@@ -53,11 +53,12 @@ public abstract class BaseDbms
 
 		System.out.println( "Updating -Assignment " + i + "- to new Description" );
 
-		ad.update( i, false, false, false, "Updated!", due );
 
 
 		try
 		{
+			ad.update( i, false, false, false, "Updated!", due );
+
 			if( ad.getDescription( i ).compareTo( "Updated!" ) == 0 )
 				System.out.println( "Assignment update successful." );
 			else
@@ -89,7 +90,7 @@ public abstract class BaseDbms
 
 		for( i = 0; ua.exists( String.valueOf(i), false ); i++ ) {}
 
-		ua.update( String.valueOf(i), false, "A" );
+		ua.add( String.valueOf(i), false );
 
 		if( ad.dbLines.length > numLines )
 			System.out.println( "UserAssignment for ID -" + i + "- successfully added.\n" );
