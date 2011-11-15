@@ -252,6 +252,30 @@ public abstract class BaseDbms
 			System.exit(1);
 		}
 
+		sd.dbFile.delete();
+
+		sd = new StudentDbms();
+		
+		sd.update( "10040377", "CPSC471", "TA1" );
+		sd.update( "10040378", "CPSC471", "TA1" );
+		sd.update( "10040371", "CPSC571", "TA1" );
+		sd.update( "10040372", "CPSC481", "TA1" );
+		sd.update( "10040373", "CPSC471", "TA1" );
+		sd.update( "10040374", "CPSC471", "TA1" );
+
+
+		System.out.println( "Getting list of students in CPSC471..." );
+
+		String[] students = sd.getStudentsInCourse( "CPSC471" );
+
+		if( students == null || students.length != 4 )
+		{
+			System.out.println( "Getting list failed!  " + students.length + " were returned." );
+			System.exit(1);
+		}
+		else
+			System.out.println( "Getting list successful." );
+
 
 		System.out.println( "Testing of -StudentDbms- successful\n#########\n\n" );
 
