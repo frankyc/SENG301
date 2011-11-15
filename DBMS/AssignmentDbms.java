@@ -54,10 +54,13 @@ public class AssignmentDbms extends BaseDbms
 	 * @param visible - The visibilty of the assignment to students
 	 * @param gradesVisible - The visibility of assignment grades to students
 	 * @param commentsVisible - The visibility of comments to students
-	 * @param description - The description of the assignment
+	 * @param description - The description of the assignment; set to null or "" for blank comment
 	 */
 	public void update( int assignNum, boolean visible, boolean gradesVisible, boolean commentsVisible, String description )
 	{
+		if( description == null || description.compareTo( "" ) == 0 )
+			description = "-";
+
 		try
 		{
 			for( int i = 0; i < dbLines.length; i++ )
@@ -196,7 +199,12 @@ public class AssignmentDbms extends BaseDbms
 			String[] line = dbLines[i].split( "\t" );
 
 			if( line[0].compareTo( String.valueOf(assignNum) ) == 0 )
-				return line[4];
+			{
+				if( line[4].compareTo( "-" ) == 0 )
+					return "";
+				else
+					return line[4];
+			}
 		}
 
 		throw new AssignmentNotExistException();
