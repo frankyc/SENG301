@@ -110,4 +110,36 @@ public class StudentDbms extends UserDbms
 
 		return null;
 	}
+
+
+
+
+	/**
+	 * Gets a list of the ID's of all students in a given course
+	 *
+	 * @param course - The course in which to look for students
+	 *
+	 * @return - Array of ID's for those students in course; null if none found
+	 */
+	public String[] getStudentsInCourse( String course )
+	{
+		Vector<String> ids = new Vector<String>();
+
+		for( int i = 0; i < dbLines.length; i++ )
+		{
+			String[] line = dbLines[i].split( "\t" );
+
+			if( line[1].compareTo( course ) == 0 )
+				ids.addElement( line[0] );
+		}
+
+		if( ids.size() == 0 )
+			return null;
+		else
+		{
+			String[] idsArr = new String[ ids.size() ];
+
+			return ids.toArray( idsArr );
+		}
+	}
 }
