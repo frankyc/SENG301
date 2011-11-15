@@ -50,11 +50,10 @@ public class UserAssignmentDbms extends BaseDbms
 
 
 	/**
-	 * Creates a new UserAssignemnt with a default empty comment value
+	 * Creates a new UserAssignemnt with a empty comment and grade values
 	 *
 	 * @param id - The id of the student that this submission belongs
 	 * @param late - Whether the assignment hand-in is past the due date
-	 * @param grade - The grade for the assignment
 	 */
 	public void add( String id, boolean late )
 	{
