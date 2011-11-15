@@ -56,7 +56,7 @@ public class UserAssignmentDbms extends BaseDbms
 	 * @param late - Whether the assignment hand-in is past the due date
 	 * @param grade - The grade for the assignment
 	 */
-	public void update( String id, boolean late )
+	public void add( String id, boolean late )
 	{
 		update( id, late, "", "" );
 	}
@@ -74,12 +74,6 @@ public class UserAssignmentDbms extends BaseDbms
 	 */
 	public void update( String id, boolean late, String grade, String comments )
 	{
-		if( grade == null || grade.compareTo( "" ) == 0 )
-			grade = "-";
-
-		if( comments == null || grade.compareTo( "" ) == 0 )
-			comments == "-";
-
 		try
 		{
 			for( int i = 0; i < dbLines.length; i++ )
@@ -156,12 +150,7 @@ public class UserAssignmentDbms extends BaseDbms
 			String[] line = dbLines[i].split( "\t" );
 
 			if( line[0].compareTo(id) == 0 && line[1].compareTo(String.valueOf(late)) == 0 )
-			{
-				if( line[2].compareTo( "-" ) == 0 )
-					return "";
-				else
-					return line[2];
-			}
+				return line[2];
 		}
 
 		return null;
@@ -185,80 +174,9 @@ public class UserAssignmentDbms extends BaseDbms
 			String[] line = dbLines[i].split( "\t" );
 
 			if( line[0].compareTo(id) == 0 && line[1].compareTo(String.valueOf(late)) == 0 )
-			{
-				if( line[3].compareTo( "-" ) == 0 )
-					return "";
-				else
-					return line[3];
-			}
+				return line[3];
 		}
 
 		throw new AssignmentNotExistException();
-	}
-
-
-
-
-	/**
-	 * Removes an assignment submission from the DBMS
-	 *
-	 * @param id - The ID of the student to remove the submission for
-	 * @param late - Whether to look for a late assignment or not
-	 */
-	public void deleteSubmission( String id, boolean late ) throws AssignmentNotExistException
-	{
-		if( !exists( id, late ) )
-			throw new AssignmentNotExistException();
-
-		String[] newDbLines = new String[dbLines.length-1];
-
-		int i = 0;
-		int j = 0;
-
-		for( ; i < dbLines.length; i++, j++ )
-		{
-			String[] line = dbLines[i].split( "\t" );
-
-			if( line[0].compareTo( id ) != 0 )
-				newDbLines[j] = dbLines[i];
-			else if( line[1].compareTo( String.valueOf(late) ) == 0 )
-				j--;
-		}
-
-		if( i == j )
-			throw new AssignmentNotExistException();
-
-		dbLines = newDbLines;
-
-		writeLinesToFile();
-	}
-
-
-
-	/**
-	 * Updates the comments on a submitted assignment
-	 *
-	 * @param id - Id of the student for which to update the submission
-	 * @param late - Whether to update a late assignment or not
-	 * @param comments - The new comments
-	 */
-	public void updateComments( String id, boolean late, String comments ) throws AssignmentNotExistException
-	{
-		update( id, late, getGrade( id, late ), comments );
-	}
-
-
-
-
-	/**
-	 * Updates the grade on a submitted assignment
-	 *
-	 * @param id - Id of the student for which to update the submission
-	 * @param late - Whether to update a late assignment or not
-	 * @param grade - The new grade
-	 */
-	public void updateGrade( String id, boolean late, String grade ) throws AssignmentNotExistException
-	{
-		update( id, late, grade, getComments( id, late ) );
 	}
 }
