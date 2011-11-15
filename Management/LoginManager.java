@@ -9,6 +9,7 @@ package Management;
 import java.io.*;
 import java.util.Scanner;
 
+import DBMS.UserDbms;
 import Users.*;
 
 	/*//conventions
@@ -16,11 +17,10 @@ import Users.*;
 	 * Class name = User UserName
 	 * constants = ALLCAPSRAGE
 	 * function = varables*/
-public class LoginManager 
+public class LoginManager implements DBMSAccessor
 {
 	//Path Name can be changed anytime.
 	private static final String LOGINPATH = System.getProperty( "user.dir" ) + "/LoginListEncrypt.txt";
-
 	private User users;
 	private boolean loggedOn = false;
 	//Call this to GetUser Validation
@@ -49,6 +49,7 @@ public class LoginManager
 					loggedOn = true;
 					getUser(dBPermission);
 					users.setUsername(username);
+					users.setCourse(uDbms.getCourses(username));
 					System.out.println(users.getPermissions());
 					return users;
 			}
