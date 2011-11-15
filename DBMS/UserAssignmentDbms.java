@@ -50,15 +50,14 @@ public class UserAssignmentDbms extends BaseDbms
 
 
 	/**
-	 * Creates a new UserAssignemnt with a default empty comment value
+	 * Creates a new UserAssignemnt with a empty comment and grade values
 	 *
 	 * @param id - The id of the student that this submission belongs
 	 * @param late - Whether the assignment hand-in is past the due date
-	 * @param grade - The grade for the assignment
 	 */
-	public void update( String id, boolean late, String grade )
+	public void add( String id, boolean late )
 	{
-		update( id, late, grade, "-" );
+		update( id, late, "", "" );
 	}
 
 
@@ -178,42 +177,5 @@ public class UserAssignmentDbms extends BaseDbms
 		}
 
 		throw new AssignmentNotExistException();
-	}
-
-
-
-
-	/**
-	 * Removes an assignment submission from the DBMS
-	 *
-	 * @param id - The ID of the student to remove the submission for
-	 * @param late - Whether to look for a late assignment or not
-	 */
-	public void deleteSubmission( String id, boolean late ) throws AssignmentNotExistException
-	{
-		if( !exists( id, late ) )
-			throw new AssignmentNotExistException();
-
-		String[] newDbLines = new String[dbLines.length-1];
-
-		int i = 0;
-		int j = 0;
-
-		for( ; i < dbLines.length; i++, j++ )
-		{
-			String[] line = dbLines[i].split( "\t" );
-
-			if( line[0].compareTo( id ) != 0 )
-				newDbLines[j] = dbLines[i];
-			else if( line[1].compareTo( String.valueOf(late) ) == 0 )
-				j--;
-		}
-
-		if( i == j )
-			throw new AssignmentNotExistException();
-
-		dbLines = newDbLines;
-
-		writeLinesToFile();
 	}
 }

@@ -9,10 +9,17 @@
 package DBMS;
 
 import java.io.*;
-import java.util.Vector;
+import java.util.*;
 
 public class AssignmentDbms extends BaseDbms
 {
+	private final int ASSIGN_NUM = 0;
+	private final int VISIBLE = 1;
+	private final int GRADES_VISIBLE = 2;
+	private final int COMMENTS_VISIBLE = 3;
+	private final int DESCRIPTION = 4;
+	private final int DUE_DATE = 5;
+
 	private String course;
 
 	/**
@@ -56,7 +63,7 @@ public class AssignmentDbms extends BaseDbms
 	 * @param commentsVisible - The visibility of comments to students
 	 * @param description - The description of the assignment
 	 */
-	public void update( int assignNum, boolean visible, boolean gradesVisible, boolean commentsVisible, String description )
+	public void update( int assignNum, boolean visible, boolean gradesVisible, boolean commentsVisible, String description, Calendar dueDate )
 	{
 		try
 		{
@@ -64,9 +71,9 @@ public class AssignmentDbms extends BaseDbms
 			{
 				String[] line = dbLines[i].split( "\t" );
 
-				if( line[0].compareTo( String.valueOf(assignNum) ) == 0 )
+				if( line[ASSIGN_NUM].compareTo( String.valueOf(assignNum) ) == 0 )
 				{
-					dbLines[i] = assignNum + "\t" + visible + "\t" + gradesVisible + "\t" + commentsVisible + "\t" + description + "\r\n";
+					dbLines[i] = assignNum + "\t" + visible + "\t" + gradesVisible + "\t" + commentsVisible + "\t" + description + "\t" + dueDate.getTimeInMillis() + "\r\n";
 					writeLinesToFile();
 
 					return;
@@ -77,7 +84,7 @@ public class AssignmentDbms extends BaseDbms
 			System.out.println( "Assignment doesn't exist, so appending..." );
 			BufferedWriter out = new BufferedWriter( new FileWriter( dbFile, true /* append */ ) );
 
-			out.write( assignNum + "\t" + visible + "\t" + gradesVisible + "\t" + commentsVisible + "\t" + description + "\r\n" );
+			out.write( assignNum + "\t" + visible + "\t" + gradesVisible + "\t" + commentsVisible + "\t" + description + "\t" + dueDate.getTimeInMillis() + "\r\n" );
 
 			out.close();
 
@@ -107,7 +114,7 @@ public class AssignmentDbms extends BaseDbms
 		{
 			String[] line = dbLines[i].split( "\t" );
 
-			if( line[0].compareTo( String.valueOf(assignNum) ) == 0 )
+			if( line[ASSIGN_NUM].compareTo( String.valueOf(assignNum) ) == 0 )
 				return true;
 		}
 
@@ -129,8 +136,8 @@ public class AssignmentDbms extends BaseDbms
 		{
 			String[] line = dbLines[i].split( "\t" );
 
-			if( line[0].compareTo( String.valueOf(assignNum) ) == 0 )
-				return Boolean.parseBoolean( line[1] );
+			if( line[ASSIGN_NUM].compareTo( String.valueOf(assignNum) ) == 0 )
+				return Boolean.parseBoolean( line[VISIBLE] );
 		}
 
 		throw new AssignmentNotExistException();
@@ -151,8 +158,8 @@ public class AssignmentDbms extends BaseDbms
 		{
 			String[] line = dbLines[i].split( "\t" );
 
-			if( line[0].compareTo( String.valueOf(assignNum) ) == 0 )
-				return Boolean.parseBoolean( line[2] );
+			if( line[ASSIGN_NUM].compareTo( String.valueOf(assignNum) ) == 0 )
+				return Boolean.parseBoolean( line[GRADES_VISIBLE] );
 		}
 
 		throw new AssignmentNotExistException();
@@ -173,8 +180,8 @@ public class AssignmentDbms extends BaseDbms
 		{
 			String[] line = dbLines[i].split( "\t" );
 
-			if( line[0].compareTo( String.valueOf(assignNum) ) == 0 )
-				return Boolean.parseBoolean( line[3] );
+			if( line[ASSIGN_NUM].compareTo( String.valueOf(assignNum) ) == 0 )
+				return Boolean.parseBoolean( line[COMMENTS_VISIBLE] );
 		}
 
 		throw new AssignmentNotExistException();
@@ -195,8 +202,35 @@ public class AssignmentDbms extends BaseDbms
 		{
 			String[] line = dbLines[i].split( "\t" );
 
-			if( line[0].compareTo( String.valueOf(assignNum) ) == 0 )
-				return line[4];
+			if( line[ASSIGN_NUM].compareTo( String.valueOf(assignNum) ) == 0 )
+				return line[DESCRIPTION];
+		}
+
+		throw new AssignmentNotExistException();
+	}
+
+
+
+	/**
+	 * Gets the due date for an assignment
+	 *
+	 * @param assignNum - The assignment number to get the due date for
+	 *
+	 * @return - The calendar object representing the due date
+	 */
+	public Calendar getDueDate( int assignNum ) throws AssignmentNotExistException
+	{
+		for( int i = 0; i < dbLines.length; i++ )
+		{
+			String[] line = dbLines[i].split( "\t" );
+
+			if( line[ASSIGN_NUM].compareTo( String.valueOf(assignNum) ) == 0 )
+			{
+				Calendar dueDate = new GregorianCalendar();
+				dueDate.setTimeInMillis( Long.parseLong( line[DUE_DATE] ) );
+
+				return dueDate;
+			}	
 		}
 
 		throw new AssignmentNotExistException();
