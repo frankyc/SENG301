@@ -62,8 +62,7 @@ public class AssignmentDbms extends BaseDbms
 	 * @param commentsVisible - The visibility of comments to students
 	 * @param description - The description of the assignment; set to null or "" for blank comment
 	 */
-	public void update( int assignNum, boolean visible, boolean gradesVisible, boolean commentsVisible, String description, Calendar dueDate )
-	public void update( int assignNum, boolean visible, boolean gradesVisible, boolean commentsVisible, String description ) throws AssignmentNotExistException
+	public void update( int assignNum, boolean visible, boolean gradesVisible, boolean commentsVisible, String description, Calendar dueDate ) throws AssignmentNotExistException
 	{
 		if( description == null || description.compareTo( "" ) == 0 )
 			description = "-";
@@ -74,7 +73,7 @@ public class AssignmentDbms extends BaseDbms
 
 			if( line[0].compareTo( String.valueOf(assignNum) ) == 0 )
 			{
-				dbLines[i] = assignNum + "\t" + visible + "\t" + gradesVisible + "\t" + commentsVisible + "\t" + description + "\r\n";
+				dbLines[i] = assignNum + "\t" + visible + "\t" + gradesVisible + "\t" + commentsVisible + "\t" + description + "\t" + dueDate.getTimeInMillis() + "\r\n";
 				writeLinesToFile();
 
 				return;
@@ -95,17 +94,18 @@ public class AssignmentDbms extends BaseDbms
 	 * @param commentsVisible - The visibility of comments to students
 	 * @param description - The description of the assignment; set to null or "" for blank comment
 	 */
-	public void add( boolean visible, boolean gradesVisible, boolean commentsVisible, String description )
+	public void add( boolean visible, boolean gradesVisible, boolean commentsVisible, String description, Calendar dueDate )
 	{
 		if( description == null || description.compareTo( "" ) == 0 )
 			description = "-";
 
+		int assignNum = getNextAssignNum();
+
 		try
 		{
-			System.out.println( "Assignment doesn't exist, so appending..." );
 			BufferedWriter out = new BufferedWriter( new FileWriter( dbFile, true /* append */ ) );
 
-			out.write( getNextAssignNum() + "\t" + visible + "\t" + gradesVisible + "\t" + commentsVisible + "\t" + description + "\r\n" );
+			out.write( assignNum + "\t" + visible + "\t" + gradesVisible + "\t" + commentsVisible + "\t" + description + "\t" + dueDate.getTimeInMillis() + "\r\n" );
 
 			out.close();
 
