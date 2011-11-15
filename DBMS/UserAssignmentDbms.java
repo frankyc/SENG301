@@ -174,7 +174,12 @@ public class UserAssignmentDbms extends BaseDbms
 			String[] line = dbLines[i].split( "\t" );
 
 			if( line[0].compareTo(id) == 0 && line[1].compareTo(String.valueOf(late)) == 0 )
-				return line[3];
+			{
+				if( line[3].compareTo( "-" ) == 0 )
+					return "";
+				else
+					return line[3];
+			}
 		}
 
 		throw new AssignmentNotExistException();
@@ -215,5 +220,34 @@ public class UserAssignmentDbms extends BaseDbms
 		dbLines = newDbLines;
 
 		writeLinesToFile();
+	}
+
+
+
+	/**
+	 * Updates the comments on a submitted assignment
+	 *
+	 * @param id - Id of the student for which to update the submission
+	 * @param late - Whether to update a late assignment or not
+	 * @param comments - The new comments
+	 */
+	public void updateComments( String id, boolean late, String comments ) throws AssignmentNotExistException
+	{
+		update( id, late, getGrade( id, late ), comments );
+	}
+
+
+
+
+	/**
+	 * Updates the grade on a submitted assignment
+	 *
+	 * @param id - Id of the student for which to update the submission
+	 * @param late - Whether to update a late assignment or not
+	 * @param grade - The new grade
+	 */
+	public void updateGrade( String id, boolean late, String grade ) throws AssignmentNotExistException
+	{
+		update( id, late, grade, getComments( id, late ) );
 	}
 }
