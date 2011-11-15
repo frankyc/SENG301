@@ -10,7 +10,7 @@ public class Instructor extends User{
 		super();
 		super.setPermission(INSTRUCTOR);
 	}
-	public Instructor(String username, String Course,String Instr){
-		super(username,Course,TA);
+	public Instructor(String username, String[] Course){
+		super(username,Course,INSTRUCTOR);
 	}
 }

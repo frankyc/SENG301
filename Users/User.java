@@ -9,16 +9,16 @@ package Users;
 public abstract class User{
 
 	private String userName;
-	private String course;
+	private String[] course;
 	private int permissions;
 	public static final int INSTRUCTOR = 1;
 	public static final int TA = 2;
 	public static final int STUDENT = 3;
 	public User(){
-		this("","",0);
+		this("",null,0);
 	}
 
-	public User(String username, String Course, int T) {
+	public User(String username, String[] Course, int T) {
 		setUsername(username);
 		setCourse(Course);
 		setPermission(T);
@@ -26,7 +26,7 @@ public abstract class User{
 	public void setUsername(String user){
 		userName = user;
 	}
-	public void setCourse(String cour){
+	public void setCourse(String[] cour){
 		course = cour;
 	}
 	public void setPermission(int T){
@@ -38,7 +38,7 @@ public abstract class User{
 	public String getName(){
 		return userName;
 	}
-	public String getPassword(){
+	public String[] getPassword(){
 		return course;
 	}
 	
