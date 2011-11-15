@@ -56,9 +56,9 @@ public class UserAssignmentDbms extends BaseDbms
 	 * @param late - Whether the assignment hand-in is past the due date
 	 * @param grade - The grade for the assignment
 	 */
-	public void update( String id, boolean late, String grade )
+	public void update( String id, boolean late )
 	{
-		update( id, late, grade, "-" );
+		update( id, late, "", "" );
 	}
 
 
@@ -74,6 +74,12 @@ public class UserAssignmentDbms extends BaseDbms
 	 */
 	public void update( String id, boolean late, String grade, String comments )
 	{
+		if( grade == null || grade.compareTo( "" ) == 0 )
+			grade = "-";
+
+		if( comments == null || grade.compareTo( "" ) == 0 )
+			comments == "-";
+
 		try
 		{
 			for( int i = 0; i < dbLines.length; i++ )
@@ -150,7 +156,12 @@ public class UserAssignmentDbms extends BaseDbms
 			String[] line = dbLines[i].split( "\t" );
 
 			if( line[0].compareTo(id) == 0 && line[1].compareTo(String.valueOf(late)) == 0 )
-				return line[2];
+			{
+				if( line[2].compareTo( "-" ) == 0 )
+					return "";
+				else
+					return line[2];
+			}
 		}
 
 		return null;
