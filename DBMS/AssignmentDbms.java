@@ -47,40 +47,57 @@ public class AssignmentDbms extends BaseDbms
 
 
 	/**
-	 * Appends a new Assignment to the end of the assignment DB file if it doesn't exist
-	 * If assignment exists, it is overwritten
+	 * Updates an existing assignment
 	 *
-	 * @param assignNum - The assignment number
+	 * @param assignNum - The assignment number to update
 	 * @param visible - The visibilty of the assignment to students
 	 * @param gradesVisible - The visibility of assignment grades to students
 	 * @param commentsVisible - The visibility of comments to students
 	 * @param description - The description of the assignment; set to null or "" for blank comment
 	 */
-	public void update( int assignNum, boolean visible, boolean gradesVisible, boolean commentsVisible, String description )
+	public void update( int assignNum, boolean visible, boolean gradesVisible, boolean commentsVisible, String description ) throws AssignmentNotExistException
+	{
+		if( description == null || description.compareTo( "" ) == 0 )
+			description = "-";
+
+		for( int i = 0; i < dbLines.length; i++ )
+		{
+			String[] line = dbLines[i].split( "\t" );
+
+			if( line[0].compareTo( String.valueOf(assignNum) ) == 0 )
+			{
+				dbLines[i] = assignNum + "\t" + visible + "\t" + gradesVisible + "\t" + commentsVisible + "\t" + description + "\r\n";
+				writeLinesToFile();
+
+				return;
+			}
+		}
+
+		throw new AssignmentNotExistException();
+	}
+
+
+
+	/**
+	 * Adds a new assignment to the DBMS, with the assignment number being one greater than the last
+	 *
+	 * @param assignNum - The assignment number to update
+	 * @param visible - The visibilty of the assignment to students
+	 * @param gradesVisible - The visibility of assignment grades to students
+	 * @param commentsVisible - The visibility of comments to students
+	 * @param description - The description of the assignment; set to null or "" for blank comment
+	 */
+	public void add( boolean visible, boolean gradesVisible, boolean commentsVisible, String description )
 	{
 		if( description == null || description.compareTo( "" ) == 0 )
 			description = "-";
 
 		try
 		{
-			for( int i = 0; i < dbLines.length; i++ )
-			{
-				String[] line = dbLines[i].split( "\t" );
-
-				if( line[0].compareTo( String.valueOf(assignNum) ) == 0 )
-				{
-					dbLines[i] = assignNum + "\t" + visible + "\t" + gradesVisible + "\t" + commentsVisible + "\t" + description + "\r\n";
-					writeLinesToFile();
-
-					return;
-				}
-			}
-
-			// Doesn't exist so append
 			System.out.println( "Assignment doesn't exist, so appending..." );
 			BufferedWriter out = new BufferedWriter( new FileWriter( dbFile, true /* append */ ) );
 
-			out.write( assignNum + "\t" + visible + "\t" + gradesVisible + "\t" + commentsVisible + "\t" + description + "\r\n" );
+			out.write( getNextAssignNum() + "\t" + visible + "\t" + gradesVisible + "\t" + commentsVisible + "\t" + description + "\r\n" );
 
 			out.close();
 
@@ -93,7 +110,21 @@ public class AssignmentDbms extends BaseDbms
 			System.exit(1);
 		}
 	}
+	
 
+
+	/**
+	 * Gets the assignment number for the next assignment
+	 */
+	private int getNextAssignNum()
+	{
+		if( dbLines.length == 0 )
+			return 1;
+
+		String[] lastAssignment = dbLines[ dbLines.length - 1 ].split( "\t" );
+
+		return Integer.parseInt( lastAssignment[0] ) + 1;
+	}
 
 
 
