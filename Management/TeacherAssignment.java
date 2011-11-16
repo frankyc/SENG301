@@ -4,6 +4,7 @@ import FileManagement.*;
 import Users.*;
 
 import java.io.FileNotFoundException;
+import java.util.Calendar;
 import java.util.Vector;
 
 public class TeacherAssignment extends CourseAssignment implements DBMSAccessor{
@@ -15,8 +16,16 @@ public class TeacherAssignment extends CourseAssignment implements DBMSAccessor{
 	static final int ISLATE = 1;
 	static final int STUDENTGRADE = 2;
 
-
-
+	TeacherAssignment(Course cor,String desc,Calendar date,boolean assVis,boolean gradeVis) throws AssignmentNotExistException{
+		super(cor,desc, date, assVis, gradeVis);
+		String[] students;
+		students = sDbms.getStudentsInCourse(cor.getCourseName());
+		for(int i =0; i< students.length;i++){
+			//TODO needs false to be late or not
+			sa.addElement(new StudentAssignment(students[i], false,cor,desc, date, assVis, gradeVis));
+		}
+	}
+	
 	/**
 	 * //TODO is this setting the grade visibility to whatever is passed in,
 	 * 	or only setting it to on?  If it's whatever is passed in then
@@ -26,9 +35,12 @@ public class TeacherAssignment extends CourseAssignment implements DBMSAccessor{
 	 * Releases grades for an assignment
 	 *
 	 * @param T_F - What to set the grade visibility to
+	 * @throws AssignmentNotExistException 
 	 */
-	public void releaseGrade(boolean T_F){
-		setGradeVisability(T_F);
+	public void releaseGrade(boolean T_F) throws AssignmentNotExistException{
+		for(int i =0; i< sa.size(); i++){
+		sa.elementAt(i).setGradeVisability(T_F);
+		}
 	}
 
 
@@ -37,12 +49,25 @@ public class TeacherAssignment extends CourseAssignment implements DBMSAccessor{
 	 * Toggles the comment visibility
 	 *
 	 * If the visibility was false, it becomes true and visa-versa
+	 * @throws AssignmentNotExistException 
 	 */
-	public void toggleCommentVisablility(){
+	public void toggleCommentVisablility() throws AssignmentNotExistException{
 		if(getCommentVisabiltiy() == true){
 			setCommentVisability(false);
 		}else {
 			setCommentVisability(true);
+		}
+	}
+	
+	/**
+	 * sets ALL Comment visibility to true or false
+	 *
+	 * 
+	 * @throws AssignmentNotExistException 
+	 */
+	public void releaseComments(boolean T_F) throws AssignmentNotExistException{
+		for(int i =0; i< sa.size(); i++){	
+			sa.elementAt(i).setCommentVisability(T_F);
 		}
 	}
 

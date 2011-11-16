@@ -26,6 +26,18 @@ public class CourseManager implements DBMSAccessor
 				for(int i=0; i< courses.length;i++){
 					iID[i]= tDbms.getInstructorId(sDbms.getTaId(iD, courses[i]),courses[i] );	
 				}
+				for(int i =0; i < courses.length;i++){
+					c.addElement(new Course(courses[i],iID[i]));
+					int j=1;
+					aDbms = new AssignmentDbms(iID[i], courses[i]);
+					while(aDbms.exists(j)){
+						//TODO Need to replace false with the assignment
+					c.elementAt(i).createStudentAccess(iD,false, aDbms.getDescription(j), 
+							aDbms.getDueDate(j), aDbms.assignVisible(j), 
+							aDbms.assignGradesVisible(j));
+					j++;
+					}
+				}
 				break;
 			case User.INSTRUCTOR:
 				courses = iDbms.getCourses(iD);
@@ -33,6 +45,19 @@ public class CourseManager implements DBMSAccessor
 				for(int i=0; i< courses.length;i++){
 					iID[i] = iD;
 				}
+				for(int i =0; i < courses.length;i++){
+					c.addElement(new Course(courses[i],iID[i]));
+					int j=1;
+					aDbms = new AssignmentDbms(iID[i], courses[i]);
+					while(aDbms.exists(j)){
+						//TODO Need to replace false with the assignment
+					c.elementAt(i).createTeacherAssigment(aDbms.getDescription(j), 
+							aDbms.getDueDate(j), aDbms.assignVisible(j), 
+							aDbms.assignGradesVisible(j));
+					j++;
+					}
+				}
+				
 				break;
 			case User.TA:
 				courses = tDbms.getCourses(iD);
@@ -40,7 +65,18 @@ public class CourseManager implements DBMSAccessor
 				for(int i=0; i< courses.length;i++){
 					iID[i]= tDbms.getInstructorId(iD,courses[i] );			
 				}
-	
+				for(int i =0; i < courses.length;i++){
+					c.addElement(new Course(courses[i],iID[i]));
+					int j=1;
+					aDbms = new AssignmentDbms(iID[i], courses[i]);
+					while(aDbms.exists(j)){
+						//TODO Need to replace false with the assignment
+					c.elementAt(i).createTeacherAssigment(aDbms.getDescription(j), 
+							aDbms.getDueDate(j), aDbms.assignVisible(j), 
+							aDbms.assignGradesVisible(j));
+					j++;
+					}
+				}
 				break;
 			default:
 				courses = null;
@@ -48,17 +84,7 @@ public class CourseManager implements DBMSAccessor
 				System.err.println("Permission not available, or Instructor DNE!");
 				System.exit(1);
 		}
-		for(int i =0; i < courses.length;i++){
-			c.addElement(new Course(courses[i],iID[i]));
-			int j=1;
-			aDbms = new AssignmentDbms(iID[i], courses[i]);
-			while(aDbms.exists(j)){
-			c.elementAt(i).createAssignment(aDbms.getDescription(j), 
-					aDbms.getDueDate(j), aDbms.assignVisible(j), 
-					aDbms.assignGradesVisible(j));
-			j++;
-			}
-		}
+		
 	}
 
 	/**

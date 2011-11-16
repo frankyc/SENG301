@@ -60,7 +60,21 @@ public class Course implements DBMSAccessor{
 		dM = new DirectoryManager (iId);
 		dM.createAssignDir( courseName, newAssignment.getAssignmentNumber() );
 	}
-
+	
+	public void createStudentAccess(String s,boolean late,String desc,Calendar date,boolean assVis,boolean gradeVis) throws AssignmentNotExistException{
+		StudentAccess newAssignment = new StudentAssignment( s, late, this, desc, date, assVis, gradeVis);
+		ca.addElement(newAssignment);
+		//dM = new DirectoryManager (iId);
+		//dM.createAssignDir( courseName, newAssignment.getAssignmentNumber() );
+		
+	}
+	public void createTeacherAssigment(String desc,Calendar date,boolean assVis,boolean gradeVis) throws AssignmentNotExistException{
+		TeacherAssignment newAssignment = new TeacherAssignment(this, desc, date, assVis, gradeVis);
+		ca.addElement(newAssignment);
+		//dM = new DirectoryManager (iId);
+		//dM.createAssignDir( courseName, newAssignment.getAssignmentNumber() );
+		
+	}
 
 
 	/**

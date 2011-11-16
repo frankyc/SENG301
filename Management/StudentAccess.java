@@ -8,7 +8,7 @@ import DBMS.*;
 
 
 public class StudentAccess extends CourseAssignment{
-	protected Student student;
+	protected String sID;
 	protected String grade;
 	protected String comment;
 	protected String path;
@@ -21,10 +21,16 @@ public class StudentAccess extends CourseAssignment{
 	 * Creates a new student access object associated with a student
 	 *
 	 * @param s - The student to associate with
+	 * @throws AssignmentNotExistException 
 	 */
-	public StudentAccess(Student s)
+	public StudentAccess(String s,boolean late,Course cor,String desc,Calendar date,boolean assVis,boolean gradeVis) throws AssignmentNotExistException
 	{
-		student = s;
+		super(cor,desc,date,assVis,gradeVis);
+		sID = s;
+		UserAssignmentDbms uADbms = new UserAssignmentDbms(tDbms.getInstructorId(sDbms.getTaId(sID, this.getCourseName()), this.getCourseName()),this.getCourseName(),this.getAssignmentNumber());
+		grade = uADbms.getGrade(sID, late);
+		comment = uADbms.getComments(sID, late);
+	
 	}
 
 
@@ -45,7 +51,7 @@ public class StudentAccess extends CourseAssignment{
 		uADbms = new UserAssignmentDbms(this.getInstructorId(),this.getCourseName(),this.getAssignmentNumber());
 		DueDate Due = new DueDate();
 		boolean isDue = Due.pastDue(this.getDueDate());
-		uADbms.deleteSubmission(student.getName(), isDue);
+		uADbms.deleteSubmission(sID, isDue);
 	}
 
 
@@ -53,14 +59,13 @@ public class StudentAccess extends CourseAssignment{
 	/**
 	 * Submits an assignment for a student including copying their submission file
 	 *
-	 * @param course - The course that the assignment belongs to
 	 * @param assignNum - The assignment number that the submission is for
 	 * @param dueDate - The due date of the assignment
 	 */
-	public void SubmitAssignment( String course, int assignNum, Calendar dueDate, String srcPath) throws FileNotFoundException
+	public void SubmitAssignment(int assignNum, Calendar dueDate, String srcPath) throws FileNotFoundException
 	{
 		DueDate due = new DueDate();
-		fM = new FileManager(student.getInstructor());
-		fM.submitFile(course,assignNum, due.pastDue(dueDate),srcPath,student.getName() );
+		fM = new FileManager(tDbms.getInstructorId(sDbms.getTaId(sID, this.getCourseName()), this.getCourseName()));
+		fM.submitFile(this.getCourseName(),this.getAssignmentNumber(), due.pastDue(this.getDueDate()),srcPath,sID );
 	}
 }
