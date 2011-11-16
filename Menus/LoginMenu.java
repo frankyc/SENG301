@@ -18,7 +18,6 @@ public class LoginMenu extends Menu
 	private String password;
 	private LoginManager loginManager;
 
-
 	public static void main( String[] args )
 	{
 		LoginMenu lm = new LoginMenu();
@@ -31,9 +30,11 @@ public class LoginMenu extends Menu
 	{
 		loginManager = new LoginManager();
 
-		String[] newMenuItems = {"##### Sub/Feed #####", "Created by: Franky Cheung, Colin Williams"};
-
-		menuItems = newMenuItems;
+		menuItems = new MenuItem[]
+		{
+			new MenuItem( "##### Sub/Feed #####" ),
+			new MenuItem( "Created by: Franky Cheung, Colin Williams" )
+		};
 	}
 
 
@@ -55,6 +56,12 @@ public class LoginMenu extends Menu
 
 		Menu.pressEnter();
 
+	}
+
+
+	public void getInput()
+	{
+		getInput( false );
 	}
 
 

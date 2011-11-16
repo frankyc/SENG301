@@ -13,7 +13,7 @@ import java.io.*;
 import java.util.Scanner;
 import Management.*;
 
-public abstract class Menu
+abstract class Menu
 {
 	// CONSTANTS
 	protected static final int QUIT = -1;
@@ -22,15 +22,15 @@ public abstract class Menu
 
 	// VARS
 	protected MenuItem[] menuItems;
-	int selectedMenuItem;
-	CourseManager courseManager;
-	Course curCourse;
+	protected int selectedMenuItem;
+	protected CourseManager courseManager;
+	protected Course curCourse;
 
 	 
 	// DEFINED METHODS
-	public void processInput();
+	public void processInput()
 	{
-		menuItems[i].run();
+		menuItems[selectedMenuItem].run();
 	}
 
 
@@ -65,22 +65,20 @@ public abstract class Menu
 
 	protected void getInput( boolean invalid )
 	{
-		getInput( menItems.length, invalid );
+		getInput( menuItems.length, invalid );
 	}
 	
-	protected void getInput( numItems )
+	protected void getInput( int numItems )
 	{
 		getInput( numItems, false );
 	}
 
-	protected void getInput( numItems, boolean invalid )
+	protected void getInput( int numItems, boolean invalid )
 	{
 		if( invalid )
 			System.out.println( "Invalid option selected.\n" );
 
 		System.out.println( "Please enter a menu option (q to logout): " );
-
-		BufferedReader in = new BufferedReader( new InputStreamReader(System.in) );
 
 		String input = getInputCore();
 
@@ -114,6 +112,8 @@ public abstract class Menu
 	 */
 	protected String getInputCore()
 	{
+		BufferedReader in = new BufferedReader( new InputStreamReader(System.in) );
+
 		try
 		{
 			return in.readLine();
@@ -125,10 +125,12 @@ public abstract class Menu
 
 			System.exit(1);
 		}
+
+		return null;
 	}
 
 
-	protected isQuit( String input )
+	protected boolean isQuit( String input )
 	{
 		if( input.compareTo( "q" ) == 0 )
 			return true;
@@ -169,7 +171,7 @@ public abstract class Menu
 		String[] items = new String[ menuItems.length ];
 
 		for( int i = 0; i < menuItems.length; i++ )
-			items[i] = menuItems[i];
+			items[i] = menuItems[i].toString();
 
 		outputMenuItems( items, numberItems );
 	}
@@ -226,7 +228,7 @@ public abstract class Menu
 			if( selectedMenuItem == INVALID )
 				continue;
 
-			return courseManager.getCourse( courses[i] );
+			return courseManager.getCourse( courses[selectedMenuItem] );
 		}
 
 		return null;
@@ -241,9 +243,9 @@ public abstract class Menu
 		System.out.println( header );
 		
 		String underline = "";
-		for( int i = 0; i < header.length; i++ )
+		for( int i = 0; i < header.length(); i++ )
 			underline = underline + "-";
 
-		System.our.println( underline );
+		System.out.println( underline );
 	}
 }

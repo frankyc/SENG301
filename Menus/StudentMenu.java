@@ -8,10 +8,11 @@
 
 package Menus;
 import Users.*;
+import Management.*;
+import DBMS.AssignmentNotExistException;
 
 public class StudentMenu extends Menu
 {
-	private String[] menuItems;
 	private Student student;
 	private StudentAccess assignment;
 
@@ -19,25 +20,29 @@ public class StudentMenu extends Menu
 	{
 		student = s;
 
-		menuItems = new String[]
+		menuItems = new MenuItem[]
 		{
-			new MenuItem( "Submit an Assignment" )
+			new MenuItem( "Submit an Assignment", this )
 			{
-				run() { submitAssignment(); }
+				public void run() { ((StudentMenu) menu).submitAssignment(); }
 			},
 
 			new MenuItem("Delete a Submission" )
 			{
-				run() { deleteAssignment(); }
+				public void run() { ((StudentMenu) menu).deleteAssignment(); }
 			}
 		};
 
-		courseManager = new CourseManager( s, s.getPermissions() );
+		try
+		{
+			courseManager = new CourseManager( s.getName(), s.getPermissions() );
+		}
+		catch( AssignmentNotExistException e ) {}
 	}
 
 
 
-	private submitAssignment()
+	void submitAssignment()
 	{
 		outputHeader( "Submit an Assignment" );
 
@@ -45,9 +50,9 @@ public class StudentMenu extends Menu
 	}
 
 
-	private deleteAssignment()
+	void deleteAssignment()
 	{
-		outputHead( "Delete a Submission" );
+		outputHeader( "Delete a Submission" );
 
 		System.out.println( "Delete an assignment here!" );
 	}
@@ -65,16 +70,16 @@ public class StudentMenu extends Menu
 	{
 		outputHeader( c.getCourseName() + " - Choose Assignment" );
 
-		int numAssignments = c.getNumAssignments();
+		int numAssignments = c.totalNumberOfAssignments();
 
 		selectedMenuItem = 0;
 
 		while( selectedMenuItem != QUIT )
 		{
 			if( selectedMenuItem != INVALID )
-				getInput( courses.length );
+				getInput( numAssignments );
 			else
-				getInput( courses.length, true /* invalid */ );
+				getInput( numAssignments, true /* invalid */ );
 
 			if( selectedMenuItem == INVALID )
 				continue;

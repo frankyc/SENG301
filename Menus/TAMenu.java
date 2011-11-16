@@ -9,6 +9,8 @@
 package Menus;
 import Users.*;
 import java.io.*;
+import Management.*;
+import DBMS.AssignmentNotExistException;
 
 public class TAMenu extends TeachingStaffMenu
 {
@@ -22,6 +24,10 @@ public class TAMenu extends TeachingStaffMenu
 
 		selectedMenuItem = 0;
 		
-		courseManager = new CourseManager( t, t.getPermissions() );
+		try
+		{
+			courseManager = new CourseManager( t.getName(), t.getPermissions() );
+		}
+		catch( AssignmentNotExistException e ) {}
 	}
 }

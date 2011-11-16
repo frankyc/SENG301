@@ -11,71 +11,85 @@
 package Menus;
 
 import Users.*;
+import Management.*;
+import DBMS.AssignmentNotExistException;
 
 public abstract class TeachingStaffMenu extends Menu
 {
-	protected TeacherAssignment teachAssign;
+	protected TeacherAssignment assignment;
 
-	protected static final MenuItem[] commonMenuItems =
+	protected MenuItem[] commonMenuItems =
 	{
-		new MenuItem( "Comment on Submitted Assignment" )
+		new MenuItem( "Comment on Submitted Assignment", this )
 		{
-			run() { commentOnSubmission(); }
+			public void run() { ((TeachingStaffMenu) menu).commentOnSubmission(); }
 		},
 
-		new MenuItem("Toggle Comment Visibility" )
+		new MenuItem("Toggle Comment Visibility", this )
 		{
-			run() { toggleCommentVisibility(); }
+			public void run() { ((TeachingStaffMenu) menu).toggleCommentVisibility(); }
 		},
 
-		new MenuItem( "Assign Grade")
+		new MenuItem( "Assign Grade", this )
 		{
-			run() { assignGrade(); }
+			public void run() { ((TeachingStaffMenu) menu).assignGrade(); }
 		},
 
-		new MenuItem( "Upload Grades" )
+		new MenuItem( "Upload Grades", this )
 		{
-			run() { uploadGrades(); }
+			public void run() { ((TeachingStaffMenu) menu).uploadGrades(); }
 		},
 
-		new MenuItem( "Download Grades" )
+		new MenuItem( "Download Grades", this )
 		{
-			run() { downloadGrades(); }
+			public void run() { ((TeachingStaffMenu) menu).downloadGrades(); }
 		}
 	};
 
-	private commentOnSubmission()
+	void commentOnSubmission()
 	{
-		outputHead( "Comment on Submitted Assignment" );
+		outputHeader( "Comment on Submitted Assignment" );
 
 		System.out.println( "Comment on submitted assignment here!" );
 	}
 
 
-	private toggleCommentVisiblity()
+	void toggleCommentVisibility()
 	{
-		if( curCourse.getCommentVisibility() == true )
-			curCourse.setCommentVisibility( false );
+		if( assignment.getCommentVisabiltiy() == true )
+		{
+			try
+			{
+				assignment.setCommentVisability( false );
+			}
+			catch( AssignmentNotExistException e ) {}
+		}
 		else
-			curCourse.setCommentVisibility( true );
+		{
+			try
+			{
+				assignment.setCommentVisability( true );
+			}
+			catch( AssignmentNotExistException e ) {}
+		}
 	}
 
-	private assignGrade()
+	void assignGrade()
 	{
 		System.out.println( "Assign Grade Here!" );
 	}
 
-	private uploadGrades()
+	void uploadGrades()
 	{
 		System.out.println( "Upload grades here!" );
 	}
 
-	private downloadGrades()
+	void downloadGrades()
 	{
 		System.out.println( "Download grades here!" );
 	}
 
-	protected static MenuItem[] joinMenuItems( MenuItem[] newMenuItems )
+	protected MenuItem[] joinMenuItems( MenuItem[] newMenuItems )
 	{
 		if( newMenuItems == null )
 			return commonMenuItems;
@@ -105,16 +119,16 @@ public abstract class TeachingStaffMenu extends Menu
 	{
 		outputHeader( c.getCourseName() + " - Choose Assignment" );
 
-		int numAssignments = c.getNumAssignments();
+		int numAssignments = c.totalNumberOfAssignments();
 
 		selectedMenuItem = 0;
 
 		while( selectedMenuItem != QUIT )
 		{
 			if( selectedMenuItem != INVALID )
-				getInput( courses.length );
+				getInput( numAssignments );
 			else
-				getInput( courses.length, true /* invalid */ );
+				getInput( numAssignments, true /* invalid */ );
 			
 			if( selectedMenuItem == INVALID )
 				continue;

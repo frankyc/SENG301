@@ -9,6 +9,9 @@
 
 package Menus;
 import Users.*;
+import Management.*;
+import java.util.*;
+import DBMS.AssignmentNotExistException;
 
 public class InstructorMenu extends TeachingStaffMenu
 {
@@ -19,23 +22,27 @@ public class InstructorMenu extends TeachingStaffMenu
 	{
 		instructor = i;
 
-		courseManager = new CourseManager( i, i.getPermissions() );
+		try
+		{
+			courseManager = new CourseManager( i.getName(), i.getPermissions() );
+		}
+		catch( AssignmentNotExistException e ) {}
 
 		MenuItem[] newMenuItems = 
 		{
-			new MenuItem( "Create a New Assignment" )
+			new MenuItem( "Create a New Assignment", this )
 			{
-				run() { createAssignment(); }
+				public void run() { ((InstructorMenu) menu).createAssignment(); }
 			},
 
-			new MenuItem("Release Grades" )
+			new MenuItem("Release Grades", this )
 			{
-				run() { releaseGrades(); }
+				public void run() { ((InstructorMenu) menu).releaseGrades(); }
 			},
 
-			new MenuItem( "Edit Grades")
+			new MenuItem( "Edit Grades", this )
 			{
-				run() { releaseGrades(); }
+				public void run() { ((InstructorMenu) menu).releaseGrades(); }
 			}
 		};
 
@@ -43,11 +50,11 @@ public class InstructorMenu extends TeachingStaffMenu
 	}
 
 
-	private void createAssignment()
+	void createAssignment()
 	{
 		System.out.println( "Creating assignment!" );
 		return;
-
+		/*
 		String name = null;
 		String description = null;
 		String year = null;
@@ -104,17 +111,22 @@ public class InstructorMenu extends TeachingStaffMenu
 
 		dueDate = new GregorianCalendar( Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(hour), Integer.parseInt(minute) );
 
-		curCourse.createAssignment( description, dueDate, false, false );
+		curCourse.createAssignment( description, dueDate, false, false );*/
 	}
 
 
-	public void ReleaseGrades()
+	void releaseGrades()
 	{
-		assignment.setGradeVisibility( true );
+		try
+		{
+			assignment.setGradeVisability( true );
+		}
+		catch( AssignmentNotExistException e )
+		{}
 	}
 
 
-	public void editGrade()
+	void editGrade()
 	{
 		outputHeader( "Edit a Grade" );
 
