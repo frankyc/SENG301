@@ -9,11 +9,11 @@ public class CourseAssignment implements DBMSAccessor{
 	private Course c;
 	private String description;
 	private Calendar dueDate;
-	private int assignmentNumber =0;
+	private static int assignmentNumber =0;
 	private boolean assignmentVisable;
 	private boolean gradesVisable;
 	private boolean commentVisable;
-
+	private AssignmentDbms aDbms;
 	/**
 	 * //TODO Do we need an empty constructor?  Basically are we ever creating an empty course?
 	 *
@@ -37,17 +37,18 @@ public class CourseAssignment implements DBMSAccessor{
 	 * @param cor - The course this assignment belongs to
 	 * @param desc - The description of the course
 	 * @param date - The due date of the assignment
-	 * @param assNum - The assignment number
 	 * @param assVis - Whether the assignment is visible to students or not
 	 * @param gradeVis - Whether grades for this assignment are visible or not
 	 */
-	public CourseAssignment(Course cor,String desc,Calendar date,int assNum,boolean assVis,boolean gradeVis){
+	public CourseAssignment(Course cor,String desc,Calendar date,boolean assVis,boolean gradeVis){
 		c = cor;
 		description = desc;
 		dueDate = date;
-		assignmentNumber = assNum;
+		assignmentNumber++;
 		assignmentVisable = assVis;
 		gradesVisable = gradeVis;
+		aDbms = new AssignmentDbms(c.getInstructorId(), c.getCourseName());
+
 	}
 
 
@@ -65,9 +66,12 @@ public class CourseAssignment implements DBMSAccessor{
 	 * Sets the grade visibility for this assignment
 	 *
 	 * @param T_F - The new grade visibility; true if the grades should be visible, false otherwise
+	 * @throws AssignmentNotExistException 
 	 */
-	protected void setGradeVisability(boolean T_F){
+	public void setGradeVisability(boolean T_F) throws AssignmentNotExistException{
 		gradesVisable = T_F;
+		aDbms.update(assignmentNumber, assignmentVisable, gradesVisable, gradesVisable, description, dueDate);
+
 	}
 
 
@@ -76,9 +80,11 @@ public class CourseAssignment implements DBMSAccessor{
 	 * Sets the comments visibility for this assignment
 	 *
 	 * @param T_F - The new comments visibility; true if the comments should be visible, false otherwise
+	 * @throws AssignmentNotExistException 
 	 */
-	protected void setCommentVisability(boolean T_F){
+	public void setCommentVisability(boolean T_F) throws AssignmentNotExistException{
 		commentVisable = T_F;
+		aDbms.update(assignmentNumber, assignmentVisable, gradesVisable, gradesVisable, description, dueDate);
 	}
 
 
@@ -86,7 +92,7 @@ public class CourseAssignment implements DBMSAccessor{
 	/**
 	 * @return - The visiblity of the comments; true if they are visibile, false otherwise
 	 */
-	protected boolean getCommentVisabiltiy(){
+	public boolean getCommentVisabiltiy(){
 		return commentVisable;
 	}
 	
@@ -96,9 +102,12 @@ public class CourseAssignment implements DBMSAccessor{
 	 * Sets the visibility of this assignment to students
 	 *
 	 * @param T_F - The new visibility of the assignment; true if visible, false otherwise
+	 * @throws AssignmentNotExistException 
 	 */ 
-	public void setAssignmentVisable(boolean T_F){
+	public void setAssignmentVisable(boolean T_F) throws AssignmentNotExistException{
 		assignmentVisable = T_F;
+		aDbms.update(assignmentNumber, assignmentVisable, gradesVisable, gradesVisable, description, dueDate);
+
 	}
 
 
@@ -107,9 +116,12 @@ public class CourseAssignment implements DBMSAccessor{
 	 * Sets the due date of this assignment
 	 *
 	 * @param newDue - The new due date of the assignment
+	 * @throws AssignmentNotExistException 
 	 */
-	protected void setDueDate(Calendar newDue){
+	public void setDueDate(Calendar newDue) throws AssignmentNotExistException{
 		dueDate = newDue;
+		aDbms.update(assignmentNumber, assignmentVisable, gradesVisable, gradesVisable, description, dueDate);
+
 	}
 
 
@@ -118,9 +130,12 @@ public class CourseAssignment implements DBMSAccessor{
 	 * Updates the description for this assignment
 	 *
 	 * @param newDesc - The new description to be applied
+	 * @throws AssignmentNotExistException 
 	 */
-	public void updateDescription(String newDesc){
+	public void updateDescription(String newDesc) throws AssignmentNotExistException{
 		description = newDesc;
+		aDbms.update(assignmentNumber, assignmentVisable, gradesVisable, gradesVisable, newDesc, dueDate);
+
 	}
 	
 

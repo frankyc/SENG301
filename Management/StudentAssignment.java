@@ -1,23 +1,26 @@
 package Management;
 
+import java.util.Calendar;
+
 import Users.*;
 import FileManagement.*;
 import DBMS.*;
 
-public class StudentAssignment extends StudentAccess{
+public class StudentAssignment extends StudentAccess implements DBMSAccessor{
 	/**
 	 * Creates a new Student Assignment
 	 *
 	 * @param s - The student this assignment belongs to
+	 * @throws AssignmentNotExistException 
 	 */
-	public StudentAssignment(Student s) {
-		super(s);
+	public StudentAssignment(String s,boolean late,Course cor,String desc,Calendar date,boolean assVis,boolean gradeVis) throws AssignmentNotExistException {
+		super(s, late, cor, desc, date, assVis, gradeVis);
 	}
 
 
-	private UserAssignmentDbms uADbms = new UserAssignmentDbms(student.getInstructor(),this.getCourseName(),this.getAssignmentNumber());
-
-
+	private UserAssignmentDbms uADbms = new UserAssignmentDbms(tDbms.getInstructorId(sDbms.getTaId(sID, this.getCourseName()), this.getCourseName()),this.getCourseName(),this.getAssignmentNumber());
+	
+	
 
 	/**
 	 * Assigns a grade to this assignment
@@ -49,7 +52,7 @@ public class StudentAssignment extends StudentAccess{
 	 */
 	public void updateGrade(String newGr,boolean isLate) throws AssignmentNotExistException{
 		grade = newGr;
-		uADbms.update(student.getName(), isLate, newGr,uADbms.getComments(student.getName(), isLate));
+		uADbms.update(sID, isLate, newGr,uADbms.getComments(sID, isLate));
 	}
 
 
@@ -62,7 +65,7 @@ public class StudentAssignment extends StudentAccess{
 	 */
 	public void updateComment(String comm,boolean isLate){
 		comment = comm;
-		uADbms.update(student.getName(), isLate,uADbms.getGrade(student.getName(), isLate), comm);
+		uADbms.update(sID, isLate,uADbms.getGrade(sID, isLate), comm);
 	}
 	
 }
