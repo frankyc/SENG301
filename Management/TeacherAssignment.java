@@ -10,12 +10,34 @@ public class TeacherAssignment extends CourseAssignment{
 	private Vector<StudentAssignment> sa;
 	private UserAssignmentDbms uADbms;
 	private FileManager fM;
+
 	static final int STUDENTID = 0;
 	static final int ISLATE = 1;
 	static final int STUDENTGRADE = 2;
+
+
+
+	/**
+	 * //TODO is this setting the grade visibility to whatever is passed in,
+	 * 	or only setting it to on?  If it's whatever is passed in then
+	 * 	the name doesn't portray that properly and should probably be updated
+	 * 	Comment should be updated as appropriate
+	 *
+	 * Releases grades for an assignment
+	 *
+	 * @param T_F - What to set the grade visibility to
+	 */
 	public void releaseGrade(boolean T_F){
 		setGradeVisability(T_F);
 	}
+
+
+
+	/**
+	 * Toggles the comment visibility
+	 *
+	 * If the visibility was false, it becomes true and visa-versa
+	 */
 	public void toggleCommentVisablility(){
 		if(getCommentVisabiltiy() == true){
 			setCommentVisability(false);
@@ -23,9 +45,15 @@ public class TeacherAssignment extends CourseAssignment{
 			setCommentVisability(true);
 		}
 	}
+
+
+
+
 	/**
-	 * This should read all grades for each student and output it as a txt with students grades
-	 * each line to given path
+	 * Downloads all grades for this assignment to the specified file
+	 *
+	 * @param path - The path to the file that the grades should be written to
+	 *
 	 * @throws FileExistsException 
 	 */
 	public void downloadGrades(String path) throws FileExistsException{
@@ -46,6 +74,13 @@ public class TeacherAssignment extends CourseAssignment{
 		fM.writeGradeFile(path, sgrades);
 	}
 	
+
+
+	/**
+	 * Uploades grades from a file into the system
+	 *
+	 * @param path - The path for the source file
+	 */
 	public void uploadGrades(String path) throws AssignmentNotExistException{
 		uADbms= new UserAssignmentDbms(this.getInstructorId(),this.getCourseName(),this.getAssignmentNumber());
 		String[] studentsGrades = fM.readGradeFile(path);
@@ -67,10 +102,27 @@ public class TeacherAssignment extends CourseAssignment{
 		}
 	}
 	
+
+
+	/**
+	 * // TODO empty function?  Do we need it?
+	 */
 	public void getAssignment(String id, String course, String assNum){
 		
 	}
 	
+
+
+	/**
+	 * // TODO I feel that the course and assignNum path shouldn't be needed here if the
+	 * 		other methods above work; they don't need that info so why should this one?
+	 *
+	 * Downloads all submitted files to a directory
+	 *
+	 * @param course - The course to download the files for
+	 * @param destPath - The destination directory
+	 * @param assignNum - The assignment number to download files from
+	 */
 	public void downloadSubmittedFiles(String course,String destPath,int assignNum) throws FileNotFoundException{
 		fM = new FileManager(this.getInstructorId());
 		fM.downloadAllSubmittedFiles( course, assignNum,destPath );

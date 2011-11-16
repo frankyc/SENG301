@@ -24,6 +24,16 @@ public class LoginManager implements DBMSAccessor
 	private User users;
 	private boolean loggedOn = false;
 	//Call this to GetUser Validation
+
+	/**
+	 * Checks if the user information passed in is valid or not
+	 *
+	 * @param username - The username to check for
+	 * @param password - The password to check for
+	 *
+	 * @return - The object representing the respective user if both the username and password
+	 * 		exist, and the password is associated with the username.  Null otherwise.
+	 */
 	public User ValidateLogin(String username,String password) 
 	{
 		File Logs = null;
@@ -60,17 +70,29 @@ public class LoginManager implements DBMSAccessor
 		
 	}
 	
+
+
+	/**
+	 * Logs out a user
+	 */
 	public void Logout(){
 		loggedOn = false;
 		System.out.println("\n\n\n\n");
+		// TODO I don't think we should be outputting to the console here...
 	}
 
 
-	public boolean LoggedIn() {	
+
+	/**
+	 * @return - True if the user is logged on, false otherwise
+	 */
+	public boolean LoggedIn() {
 		return loggedOn;
 	}
 	
-	//MD5 algorithm got from internet
+	/**
+	 * MD5 hashing algorithm; retreived from internet
+	 */
 	public String mD5(String md5) {
 		   try {
 		        java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
@@ -86,6 +108,12 @@ public class LoginManager implements DBMSAccessor
 	}
 	
 	//Using MD5 algorithm multiple times with salted methods to encrypt
+	/**
+	 * Uses the MD5 hash to secure the password
+	 * Hash performed multiple times with a salt for extra security before storing or retreiving
+	 *
+	 * @return - The salted and hashed password
+	 */
 	public String mD5Salted(String password){
 		String newPassword = mD5(password);
 		newPassword.concat(password);
@@ -96,6 +124,13 @@ public class LoginManager implements DBMSAccessor
 		
 	}
 	
+
+
+	/**
+	 * Sets users to the appropriate type
+	 *
+	 * @param permission - The permission level for the user
+	 */
 	private void getUser(int permission){
 		switch(permission){
 		case 1: users = new Instructor();
