@@ -9,7 +9,7 @@ public class CourseAssignment implements DBMSAccessor{
 	private Course c;
 	private String description;
 	private Calendar dueDate;
-	private int assignmentNumber =0;
+	private static int assignmentNumber =0;
 	private boolean assignmentVisable;
 	private boolean gradesVisable;
 	private boolean commentVisable;
@@ -37,15 +37,14 @@ public class CourseAssignment implements DBMSAccessor{
 	 * @param cor - The course this assignment belongs to
 	 * @param desc - The description of the course
 	 * @param date - The due date of the assignment
-	 * @param assNum - The assignment number
 	 * @param assVis - Whether the assignment is visible to students or not
 	 * @param gradeVis - Whether grades for this assignment are visible or not
 	 */
-	public CourseAssignment(Course cor,String desc,Calendar date,int assNum,boolean assVis,boolean gradeVis){
+	public CourseAssignment(Course cor,String desc,Calendar date,boolean assVis,boolean gradeVis){
 		c = cor;
 		description = desc;
 		dueDate = date;
-		assignmentNumber = assNum;
+		assignmentNumber++;
 		assignmentVisable = assVis;
 		gradesVisable = gradeVis;
 	}

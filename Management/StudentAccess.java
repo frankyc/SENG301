@@ -30,17 +30,17 @@ public class StudentAccess extends CourseAssignment{
 
 
 	/**
-	 * Doesnt Allow For Assignment to be deleted AFTER dueDate*/
+	 * Doesn't Allow For Assignment to be deleted AFTER dueDate*/
 	/**
 	 * Deletes an assignment from a course 
 	 *
 	 * @param assNumber - The assignment number to delete the assignment from
 	 * @param course - The course to delete from
 	 *
-	 * //TODO Is this deleting a submision from a student, or an assignment in a course?
+	 * //TODO Is this deleting a submission from a student, or an assignment in a course?
 	 * 		I think it's a student submission, but the name is ambiguous
 	 */
-	public void DeleteAssignment(int assNumber,String course) throws AssignmentNotExistException{
+	public void deleteStudentAssignment(int assNumber,String course) throws AssignmentNotExistException{
 		uADbms = new UserAssignmentDbms(this.getInstructorId(),this.getCourseName(),this.getAssignmentNumber());
 		DueDate Due = new DueDate();
 		boolean isDue = Due.pastDue(this.getDueDate());

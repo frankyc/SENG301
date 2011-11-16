@@ -6,7 +6,7 @@ import Users.*;
 import java.io.FileNotFoundException;
 import java.util.Vector;
 
-public class TeacherAssignment extends CourseAssignment{
+public class TeacherAssignment extends CourseAssignment implements DBMSAccessor{
 	private Vector<StudentAssignment> sa;
 	private UserAssignmentDbms uADbms;
 	private FileManager fM;
@@ -57,10 +57,7 @@ public class TeacherAssignment extends CourseAssignment{
 	 * @throws FileExistsException 
 	 */
 	public void downloadGrades(String path) throws FileExistsException{
-		String[] students = null;
-		/**
-		 * Needs students
-		 * */
+		String[] students = sDbms.getStudentsInCourse(this.getCourseName());
 		Vector<String> studentsGrades = null;
 		int i =0;
 		uADbms= new UserAssignmentDbms(this.getInstructorId(),this.getCourseName(),this.getAssignmentNumber());
@@ -106,6 +103,7 @@ public class TeacherAssignment extends CourseAssignment{
 
 	/**
 	 * // TODO empty function?  Do we need it?
+	 * //Franky: its not needed but we could implement it to get a single assignment.
 	 */
 	public void getAssignment(String id, String course, String assNum){
 		
@@ -116,6 +114,7 @@ public class TeacherAssignment extends CourseAssignment{
 	/**
 	 * // TODO I feel that the course and assignNum path shouldn't be needed here if the
 	 * 		other methods above work; they don't need that info so why should this one?
+	 * // Franky: good point, used this pointer to get parent courseNames and assignmnetNumbers
 	 *
 	 * Downloads all submitted files to a directory
 	 *
@@ -123,8 +122,8 @@ public class TeacherAssignment extends CourseAssignment{
 	 * @param destPath - The destination directory
 	 * @param assignNum - The assignment number to download files from
 	 */
-	public void downloadSubmittedFiles(String course,String destPath,int assignNum) throws FileNotFoundException{
+	public void downloadSubmittedFiles(String destPath) throws FileNotFoundException{
 		fM = new FileManager(this.getInstructorId());
-		fM.downloadAllSubmittedFiles( course, assignNum,destPath );
+		fM.downloadAllSubmittedFiles(this.getCourseName(), this.getAssignmentNumber(),destPath );
 	}
 }

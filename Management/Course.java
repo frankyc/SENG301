@@ -46,19 +46,19 @@ public class Course implements DBMSAccessor{
 	 * Creates an assignment in this course
 	 *
 	 * @param cor - The course this assignment belongs to
-	 * //TODO Do we need cor since we are in a course already?? ****
+	 * //TODO Do we need cor since we are in a course already?? **Reply We don't so i used this pointer**
 	 * @param desc - The description of the course
 	 * @param date - The due date of the course
 	 * @param assNum - The assignment number
-	 * //TODO Since the assignment numbers are auto-incrementing, does this need to be here? ****
+	 * //TODO Since the assignment numbers are auto-incrementing, does this need to be here? **Removed assignNum, but we need to find a way to retrieve that number**
 	 * @param assVis - Whether the assignment is visible to students or not
 	 * @param gradeVis - Whether the grades for this assignment are visible to students or not
 	 */
-	public void createAssignment(Course cor,String desc,Calendar date,int assNum,boolean assVis,boolean gradeVis){
-		CourseAssignment newAssignment = new CourseAssignment(cor,desc,date,assNum,assVis,gradeVis);
+	public void createAssignment(String desc,Calendar date,boolean assVis,boolean gradeVis){
+		CourseAssignment newAssignment = new CourseAssignment(this,desc,date,assVis,gradeVis);
 		ca.addElement(newAssignment);
 		dM = new DirectoryManager (iId);
-		dM.createAssignDir( courseName, assNum );
+		dM.createAssignDir( courseName, newAssignment.getAssignmentNumber() );
 	}
 
 
@@ -75,6 +75,12 @@ public class Course implements DBMSAccessor{
 		}
 	}
 	
+	/**
+	 * @param path - Copies list of assignments into a file.
+	 * */
+	private void listAssignments(String Path){
+		
+	}
 
 
 	/**
