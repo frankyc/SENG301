@@ -39,6 +39,7 @@ public class StudentAccess extends CourseAssignment{
 	 *
 	 * //TODO Is this deleting a submission from a student, or an assignment in a course?
 	 * 		I think it's a student submission, but the name is ambiguous
+	 * 	Franky: renamed it with refactor...hope it doesnt screw things up
 	 */
 	public void deleteStudentAssignment(int assNumber,String course) throws AssignmentNotExistException{
 		uADbms = new UserAssignmentDbms(this.getInstructorId(),this.getCourseName(),this.getAssignmentNumber());

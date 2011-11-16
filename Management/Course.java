@@ -76,7 +76,7 @@ public class Course implements DBMSAccessor{
 	}
 	
 	/**
-	 * @param path - Copies list of assignments into a file.
+	 * @param path - Copies list of assignments into a document.
 	 * */
 	private void listAssignments(String Path){
 		

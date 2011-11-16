@@ -91,7 +91,7 @@ public class LoginManager implements DBMSAccessor
 	}
 	
 	/**
-	 * MD5 hashing algorithm; retreived from internet
+	 * MD5 hashing algorithm; retrieved from Internet
 	 */
 	public String mD5(String md5) {
 		   try {
@@ -110,7 +110,7 @@ public class LoginManager implements DBMSAccessor
 	//Using MD5 algorithm multiple times with salted methods to encrypt
 	/**
 	 * Uses the MD5 hash to secure the password
-	 * Hash performed multiple times with a salt for extra security before storing or retreiving
+	 * Hash performed multiple times with a salt for extra security before storing or retrieving
 	 *
 	 * @return - The salted and hashed password
 	 */

@@ -10,7 +10,56 @@ public class CourseManager implements DBMSAccessor
 	private AssignmentDbms aDbms;
 	private DirectoryManager dM;
 
-
+	/**@param iD - User id: Can be Instructor, TA, or Student ID's
+	 * @param permission - Identifier of STUDENT = 3, TA = 2, INSTRUCTOR =1
+	 * 
+	 * Creates List of Courses for specified User Based on permission Using stored
+	 * Information in DBMS's
+	 * */
+	public CourseManager(String iD, int permission) throws AssignmentNotExistException{
+		String [] courses;
+		String [] iID;
+		switch(permission){
+			case User.STUDENT:
+				courses = sDbms.getCourses(iD);
+				iID = new String[courses.length];
+				for(int i=0; i< courses.length;i++){
+					iID[i]= tDbms.getInstructorId(sDbms.getTaId(iD, courses[i]),courses[i] );	
+				}
+				break;
+			case User.INSTRUCTOR:
+				courses = iDbms.getCourses(iD);
+				iID = new String[courses.length];
+				for(int i=0; i< courses.length;i++){
+					iID[i] = iD;
+				}
+				break;
+			case User.TA:
+				courses = tDbms.getCourses(iD);
+				iID = new String[courses.length];
+				for(int i=0; i< courses.length;i++){
+					iID[i]= tDbms.getInstructorId(iD,courses[i] );			
+				}
+	
+				break;
+			default:
+				courses = null;
+				iID = null;
+				System.err.println("Permission not available, or Instructor DNE!");
+				System.exit(1);
+		}
+		for(int i =0; i < courses.length;i++){
+			c.addElement(new Course(courses[i],iID[i]));
+			int j=1;
+			aDbms = new AssignmentDbms(iID[i], courses[i]);
+			while(aDbms.exists(j)){
+			c.elementAt(i).createAssignment(aDbms.getDescription(j), 
+					aDbms.getDueDate(j), aDbms.assignVisible(j), 
+					aDbms.assignGradesVisible(j));
+			j++;
+			}
+		}
+	}
 
 	/**
 	 * Creates a new Course Manager with an instructor
