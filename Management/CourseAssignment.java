@@ -68,7 +68,7 @@ public class CourseAssignment implements DBMSAccessor{
 	 * @param T_F - The new grade visibility; true if the grades should be visible, false otherwise
 	 * @throws AssignmentNotExistException 
 	 */
-	protected void setGradeVisability(boolean T_F) throws AssignmentNotExistException{
+	public void setGradeVisability(boolean T_F) throws AssignmentNotExistException{
 		gradesVisable = T_F;
 		aDbms.update(assignmentNumber, assignmentVisable, gradesVisable, gradesVisable, description, dueDate);
 
@@ -82,7 +82,7 @@ public class CourseAssignment implements DBMSAccessor{
 	 * @param T_F - The new comments visibility; true if the comments should be visible, false otherwise
 	 * @throws AssignmentNotExistException 
 	 */
-	protected void setCommentVisability(boolean T_F) throws AssignmentNotExistException{
+	public void setCommentVisability(boolean T_F) throws AssignmentNotExistException{
 		commentVisable = T_F;
 		aDbms.update(assignmentNumber, assignmentVisable, gradesVisable, gradesVisable, description, dueDate);
 	}
@@ -92,7 +92,7 @@ public class CourseAssignment implements DBMSAccessor{
 	/**
 	 * @return - The visiblity of the comments; true if they are visibile, false otherwise
 	 */
-	protected boolean getCommentVisabiltiy(){
+	public boolean getCommentVisabiltiy(){
 		return commentVisable;
 	}
 	
@@ -118,7 +118,7 @@ public class CourseAssignment implements DBMSAccessor{
 	 * @param newDue - The new due date of the assignment
 	 * @throws AssignmentNotExistException 
 	 */
-	protected void setDueDate(Calendar newDue) throws AssignmentNotExistException{
+	public void setDueDate(Calendar newDue) throws AssignmentNotExistException{
 		dueDate = newDue;
 		aDbms.update(assignmentNumber, assignmentVisable, gradesVisable, gradesVisable, description, dueDate);
 
