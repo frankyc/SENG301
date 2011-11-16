@@ -71,7 +71,7 @@ public class Course implements DBMSAccessor{
 	 */
 	private void listAssignments(){
 		for(int i =0;i <ca.size();i++){
-			System.out.println(ca.elementAt(i));//can be changed to output in file
+			System.out.println("Assignment #" + ca.elementAt(i).getAssignmentNumber());//can be changed to output in file
 		}
 	}
 	
@@ -115,5 +115,11 @@ public class Course implements DBMSAccessor{
 			}
 		}
 		return null;
+	}
+	
+	/**@return total number of assignments listed
+	 */
+	public int totalNumberOfAssignments(){
+		return ca.size();	
 	}
 }
