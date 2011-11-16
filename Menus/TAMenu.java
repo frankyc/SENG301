@@ -18,33 +18,10 @@ public class TAMenu extends TeachingStaffMenu
 	{
 		ta = t;
 
-		String[] newMenuItems =
-		{
-			"First Item",
-			"Second Item",
-			"Third Item"
-		};
-
-		menuItems = joinMenuItems( newMenuItems );
+		menuItems = joinMenuItems( null );
 
 		selectedMenuItem = 0;
-	}
-
-
-	public void processInput()
-	{
-		switch( selectedMenuItem )
-		{
-			case 0:
-				System.out.println( "First option!" );
-				break;
-			
-			case 1:
-				System.out.println( "Second option!" );
-				break;
-
-			case 2:
-				System.out.println( "Third option!" );
-		}
+		
+		courseManager = new CourseManager( t, t.getPermissions() );
 	}
 }
