@@ -19,6 +19,9 @@ public class CourseManager implements DBMSAccessor
 	public CourseManager(String iD, int permission) throws AssignmentNotExistException{
 		String [] courses;
 		String [] iID;
+
+		c = new Vector<Course>();
+
 		switch(permission)
 		{
 			case User.STUDENT:
@@ -173,6 +176,12 @@ public class CourseManager implements DBMSAccessor
 		Vector<String> courseList = new Vector<String>();
 
 		String[] listOfCourses;
+
+		if( c == null )
+		{
+			System.out.println( "NULL COURSE" );
+			System.exit(1);
+		}
 
 		int i = 0;
 		while( i < c.size() )
