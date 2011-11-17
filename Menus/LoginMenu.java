@@ -55,7 +55,6 @@ public class LoginMenu extends Menu
 		outputMenuItems( false );
 
 		Menu.pressEnter();
-
 	}
 
 
@@ -105,7 +104,10 @@ public class LoginMenu extends Menu
 				break;
 
 			case User.STUDENT:
-				System.out.println( "You're a student!" );
+				StudentMenu studentMenu = new StudentMenu( (Student)user );
+
+				studentMenu.run();
+
 				break;
 			default:
 				System.out.println( "Whoops!  You're nothing!  We should get around to fixing that probably.  Just sayin'..." );

@@ -29,15 +29,17 @@ public class Course implements DBMSAccessor{
 	/**
 	 * Creates a course with a name and instructor ID associated with it
 	 */
-	public Course(String cName,String instrID){
+	public Course( String cName,String instrID )
+	{
 		iId = instrID;
 		courseName = cName;
 		//ca = null if course did not exist
 		ca = null;
 		
+
+		AssignmentDbms aDbms = new AssignmentDbms( instrID, cName );
 		
-		//ca = new CourseAssignment[] { all assignments listed }
-		ca.addElement(new CourseAssignment());
+		ca = new Vector<CourseAssignment>();
 	}
 
 
@@ -54,46 +56,67 @@ public class Course implements DBMSAccessor{
 	 * @param assVis - Whether the assignment is visible to students or not
 	 * @param gradeVis - Whether the grades for this assignment are visible to students or not
 	 */
-	public void createAssignment(String desc,Calendar date,boolean assVis,boolean gradeVis){
-		CourseAssignment newAssignment = new CourseAssignment(this,desc,date,assVis,gradeVis);
+	public void createAssignment( String desc, Calendar date, boolean assVis, boolean gradeVis )
+	{
+		CourseAssignment newAssignment = new CourseAssignment(
+				totalNumberOfAssignments() + 1,
+				this,
+				desc,
+				date,
+				assVis,gradeVis
+				);
+
 		ca.addElement(newAssignment);
+
 		dM = new DirectoryManager (iId);
 		dM.createAssignDir( courseName, newAssignment.getAssignmentNumber() );
 	}
 	
-	public void createStudentAccess(String s,boolean late,String desc,Calendar date,boolean assVis,boolean gradeVis) throws AssignmentNotExistException{
-		StudentAccess newAssignment = new StudentAssignment( s, late, this, desc, date, assVis, gradeVis);
-		ca.addElement(newAssignment);
-		//dM = new DirectoryManager (iId);
-		//dM.createAssignDir( courseName, newAssignment.getAssignmentNumber() );
-		
-	}
-	public void createTeacherAssigment(String desc,Calendar date,boolean assVis,boolean gradeVis) throws AssignmentNotExistException{
-		TeacherAssignment newAssignment = new TeacherAssignment(this, desc, date, assVis, gradeVis);
-		ca.addElement(newAssignment);
-		//dM = new DirectoryManager (iId);
-		//dM.createAssignDir( courseName, newAssignment.getAssignmentNumber() );
-		
-	}
-
 
 	/**
-	 * Lists the assignments in this course
-	 * //TODO Instead of saying that the method can be changed to output to a file
-	 * 		might as well have an overloaded method that takes in the path...e.g.
-	 * 		listAssignment( String path )
+	 * Creates a new student access object for this course
+	 *
+	 * @param s - The student that this student access will belong to
+	 * @param late - Whether the assignment is late or not
+	 * @param desc - The description of the assignment
+	 * @param date - The due date of the assignment
+	 * @param assVis - Whether the assignment is visible or not to the student
+	 * @param gradeVis - Whether the grades for this assignemnt are visible or not
 	 */
-	private void listAssignments(){
-		for(int i =0;i <ca.size();i++){
-			System.out.println("Assignment #" + ca.elementAt(i).getAssignmentNumber());//can be changed to output in file
-		}
+	public void createStudentAccess(
+			int assignNum,
+			String s,
+			boolean late,
+			String desc,
+			Calendar date,
+			boolean assVis,
+			boolean gradeVis
+			) throws AssignmentNotExistException
+	{
+		StudentAccess newAssignment = new StudentAccess( assignNum, s, late, this, desc, date, assVis, gradeVis);
+		ca.addElement(newAssignment);
 	}
-	
+
+
+
 	/**
-	 * @param path - Copies list of assignments into a document.
-	 * */
-	private void listAssignments(String Path){
-		
+	 * Creates a new Teacher Assignment
+	 *
+	 * @param desc - The description of the assignment
+	 * @param date - The due date of the assignment
+	 * @param assVis - Whether the assignment is visible or not
+	 * @param gradeVis - Whether the grades for the assignment are visible or not
+	 */
+	public void createTeacherAssigment(
+			int assignNum,
+			String desc,
+			Calendar date,
+			boolean assVis,
+			boolean gradeVis
+			) throws AssignmentNotExistException
+	{
+		TeacherAssignment newAssignment = new TeacherAssignment( assignNum, this, desc, date, assVis, gradeVis);
+		ca.addElement(newAssignment);
 	}
 
 

@@ -5,30 +5,35 @@ import java.util.Calendar;
 import Users.*;
 import FileManagement.*;
 import DBMS.*;
-public class CourseAssignment implements DBMSAccessor{
-	private Course c;
-	private String description;
-	private Calendar dueDate;
-	private static int assignmentNumber =0;
-	private boolean assignmentVisable;
-	private boolean gradesVisable;
-	private boolean commentVisable;
-	private AssignmentDbms aDbms;
+public class CourseAssignment implements DBMSAccessor
+{
+	protected Course c;
+	protected String description;
+	protected Calendar dueDate;
+	protected int assignmentNumber;
+	protected boolean assignmentVisable;
+	protected boolean gradesVisable;
+	protected boolean commentVisable;
+	protected AssignmentDbms aDbms;
+
+
 	/**
 	 * //TODO Do we need an empty constructor?  Basically are we ever creating an empty course?
 	 *
 	 * Creates a new, empty CourseAssignment for use
 	 */
-	public CourseAssignment(){
+	public CourseAssignment()
+	{
 		c = null;
-		description = "N/A";
+		description = "";
 		dueDate = null;
 		assignmentNumber = 0;
 		assignmentVisable = false;
 		gradesVisable = false;
 		commentVisable = false;
 	}
-	
+
+
 
 
 	/**
@@ -40,15 +45,15 @@ public class CourseAssignment implements DBMSAccessor{
 	 * @param assVis - Whether the assignment is visible to students or not
 	 * @param gradeVis - Whether grades for this assignment are visible or not
 	 */
-	public CourseAssignment(Course cor,String desc,Calendar date,boolean assVis,boolean gradeVis){
+	public CourseAssignment( int assignNum, Course cor, String desc, Calendar date, boolean assVis, boolean gradeVis )
+	{
+		assignmentNumber = assignNum;
 		c = cor;
 		description = desc;
 		dueDate = date;
-		assignmentNumber++;
 		assignmentVisable = assVis;
 		gradesVisable = gradeVis;
 		aDbms = new AssignmentDbms(c.getInstructorId(), c.getCourseName());
-
 	}
 
 

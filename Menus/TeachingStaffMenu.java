@@ -115,11 +115,14 @@ public abstract class TeachingStaffMenu extends Menu
 	 *
 	 * @return - The assignment chosen or null if they chose to quit the menu
 	 */
-	protected TeacherAssignment getAssignment( Course c )
+	protected TeacherAssignment getAssignment( Course c ) throws NoAssignmentsException
 	{
 		outputHeader( c.getCourseName() + " - Choose Assignment" );
 
 		int numAssignments = c.totalNumberOfAssignments();
+
+		if( numAssignments == 0 )
+			throw new NoAssignmentsException();
 
 		selectedMenuItem = 0;
 
@@ -133,8 +136,7 @@ public abstract class TeachingStaffMenu extends Menu
 			if( selectedMenuItem == INVALID )
 				continue;
 
-			//return c.getTeacherAssignment( selectedMenuItem );
-			return null;
+			return (TeacherAssignment) c.getAssignment( selectedMenuItem + 1 );
 		}
 
 		return null;

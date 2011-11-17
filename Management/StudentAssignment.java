@@ -13,14 +13,11 @@ public class StudentAssignment extends StudentAccess implements DBMSAccessor{
 	 * @param s - The student this assignment belongs to
 	 * @throws AssignmentNotExistException 
 	 */
-	public StudentAssignment(String s,boolean late,Course cor,String desc,Calendar date,boolean assVis,boolean gradeVis) throws AssignmentNotExistException {
-		super(s, late, cor, desc, date, assVis, gradeVis);
+	public StudentAssignment(int assignNum, String s,boolean late,Course cor,String desc,Calendar date,boolean assVis,boolean gradeVis) throws AssignmentNotExistException
+	{
+		super( assignNum, s, late, cor, desc, date, assVis, gradeVis );
 	}
 
-
-	private UserAssignmentDbms uADbms = new UserAssignmentDbms(tDbms.getInstructorId(sDbms.getTaId(sID, this.getCourseName()), this.getCourseName()),this.getCourseName(),this.getAssignmentNumber());
-	
-	
 
 	/**
 	 * Assigns a grade to this assignment

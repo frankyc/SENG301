@@ -12,8 +12,8 @@ public class StudentAccess extends CourseAssignment{
 	protected String grade;
 	protected String comment;
 	protected String path;
-	private FileManager fM;
-	private UserAssignmentDbms uADbms;
+	protected FileManager fM;
+	protected UserAssignmentDbms uADbms;
 	
 
 
@@ -23,9 +23,19 @@ public class StudentAccess extends CourseAssignment{
 	 * @param s - The student to associate with
 	 * @throws AssignmentNotExistException 
 	 */
-	public StudentAccess(String s,boolean late,Course cor,String desc,Calendar date,boolean assVis,boolean gradeVis) throws AssignmentNotExistException
+	public StudentAccess(
+			int assignNum,
+			String s,
+			boolean late,
+			Course cor,
+			String desc,
+			Calendar date,
+			boolean assVis,
+			boolean gradeVis
+			) throws AssignmentNotExistException
 	{
-		super(cor,desc,date,assVis,gradeVis);
+		super(assignNum, cor,desc,date,assVis,gradeVis);
+
 		sID = s;
 		UserAssignmentDbms uADbms = new UserAssignmentDbms(tDbms.getInstructorId(sDbms.getTaId(sID, this.getCourseName()), this.getCourseName()),this.getCourseName(),this.getAssignmentNumber());
 		grade = uADbms.getGrade(sID, late);
@@ -38,20 +48,33 @@ public class StudentAccess extends CourseAssignment{
 	/**
 	 * Doesn't Allow For Assignment to be deleted AFTER dueDate*/
 	/**
-	 * Deletes an assignment from a course 
+	 * Deletes this assignment from a course 
 	 *
-	 * @param assNumber - The assignment number to delete the assignment from
-	 * @param course - The course to delete from
+	 * @return - True if the assignment was deleted, false if it is past the due date and therefore cannot be deleted
 	 *
 	 * //TODO Is this deleting a submission from a student, or an assignment in a course?
 	 * 		I think it's a student submission, but the name is ambiguous
 	 * 	Franky: renamed it with refactor...hope it doesnt screw things up
 	 */
-	public void deleteStudentAssignment(int assNumber,String course) throws AssignmentNotExistException{
-		uADbms = new UserAssignmentDbms(this.getInstructorId(),this.getCourseName(),this.getAssignmentNumber());
-		DueDate Due = new DueDate();
-		boolean isDue = Due.pastDue(this.getDueDate());
-		uADbms.deleteSubmission(sID, isDue);
+	public boolean deleteStudentAssignment()
+	{
+		uADbms = new UserAssignmentDbms( this.getInstructorId(), this.getCourseName(), this.getAssignmentNumber() );
+
+		if( DueDate.pastDue( this.getDueDate() ) )
+			return false;
+
+		try
+		{
+			uADbms.deleteSubmission( sID, false /* late */ );
+		}
+		catch( AssignmentNotExistException e )
+		{
+			System.out.println( "This assignment doesn't exist?  Something went wrong deleting this assignment!" );
+
+			e.printStackTrace();
+		}
+
+		return true;
 	}
 
 
@@ -59,13 +82,12 @@ public class StudentAccess extends CourseAssignment{
 	/**
 	 * Submits an assignment for a student including copying their submission file
 	 *
-	 * @param assignNum - The assignment number that the submission is for
-	 * @param dueDate - The due date of the assignment
+	 * @param srcPath - The path to the file being submitted
 	 */
-	public void SubmitAssignment(int assignNum, Calendar dueDate, String srcPath) throws FileNotFoundException
+	public void submitAssignment( String srcPath ) throws FileNotFoundException
 	{
-		DueDate due = new DueDate();
-		fM = new FileManager(tDbms.getInstructorId(sDbms.getTaId(sID, this.getCourseName()), this.getCourseName()));
-		fM.submitFile(this.getCourseName(),this.getAssignmentNumber(), due.pastDue(this.getDueDate()),srcPath,sID );
+		fM = new FileManager( c.getInstructorId() );
+
+		fM.submitFile( this.getCourseName(), this.getAssignmentNumber(), DueDate.pastDue( this.getDueDate() ), srcPath, sID );
 	}
 }

@@ -19,65 +19,102 @@ public class CourseManager implements DBMSAccessor
 	public CourseManager(String iD, int permission) throws AssignmentNotExistException{
 		String [] courses;
 		String [] iID;
-		switch(permission){
+		switch(permission)
+		{
 			case User.STUDENT:
 				courses = sDbms.getCourses(iD);
 				iID = new String[courses.length];
-				for(int i=0; i< courses.length;i++){
+
+				for(int i=0; i< courses.length;i++)
 					iID[i]= tDbms.getInstructorId(sDbms.getTaId(iD, courses[i]),courses[i] );	
-				}
-				for(int i =0; i < courses.length;i++){
+
+				for(int i =0; i < courses.length; i++)
+				{
 					c.addElement(new Course(courses[i],iID[i]));
 					int j=1;
 					aDbms = new AssignmentDbms(iID[i], courses[i]);
-					while(aDbms.exists(j)){
+
+					while( aDbms.exists(j) )
+					{
 						//TODO Need to replace false with the assignment
-					c.elementAt(i).createStudentAccess(iD,false, aDbms.getDescription(j), 
-							aDbms.getDueDate(j), aDbms.assignVisible(j), 
-							aDbms.assignGradesVisible(j));
-					j++;
+						c.elementAt(i).createStudentAccess(
+								j,
+								iD,
+								false,
+								aDbms.getDescription(j), 
+								aDbms.getDueDate(j),
+								aDbms.assignVisible(j), 
+								aDbms.assignGradesVisible(j)
+								);
+
+						j++;
 					}
 				}
+
 				break;
+
 			case User.INSTRUCTOR:
 				courses = iDbms.getCourses(iD);
 				iID = new String[courses.length];
-				for(int i=0; i< courses.length;i++){
+
+				for(int i=0; i< courses.length; i++)
 					iID[i] = iD;
-				}
-				for(int i =0; i < courses.length;i++){
-					c.addElement(new Course(courses[i],iID[i]));
-					int j=1;
+				
+				for(int i =0; i < courses.length;i++)
+				{
+					c.addElement( new Course(courses[i], iID[i]) );
+
+					int j = 1;
+
 					aDbms = new AssignmentDbms(iID[i], courses[i]);
-					while(aDbms.exists(j)){
+				
+					while( aDbms.exists(j) )
+					{
 						//TODO Need to replace false with the assignment
-					c.elementAt(i).createTeacherAssigment(aDbms.getDescription(j), 
-							aDbms.getDueDate(j), aDbms.assignVisible(j), 
-							aDbms.assignGradesVisible(j));
-					j++;
+						c.elementAt(i).createTeacherAssigment(
+								j,
+								aDbms.getDescription(j), 
+								aDbms.getDueDate(j),
+								aDbms.assignVisible(j), 
+								aDbms.assignGradesVisible(j)
+								);
+						
+						j++;
 					}
 				}
 				
 				break;
+
 			case User.TA:
 				courses = tDbms.getCourses(iD);
 				iID = new String[courses.length];
-				for(int i=0; i< courses.length;i++){
+
+				for(int i=0; i< courses.length;i++)
 					iID[i]= tDbms.getInstructorId(iD,courses[i] );			
-				}
-				for(int i =0; i < courses.length;i++){
+				
+				for(int i =0; i < courses.length;i++)
+				{
 					c.addElement(new Course(courses[i],iID[i]));
 					int j=1;
 					aDbms = new AssignmentDbms(iID[i], courses[i]);
-					while(aDbms.exists(j)){
+
+					while( aDbms.exists(j) )
+					{
 						//TODO Need to replace false with the assignment
-					c.elementAt(i).createTeacherAssigment(aDbms.getDescription(j), 
-							aDbms.getDueDate(j), aDbms.assignVisible(j), 
-							aDbms.assignGradesVisible(j));
-					j++;
+						c.elementAt(i).createTeacherAssigment(
+								j,
+								aDbms.getDescription(j), 
+								aDbms.getDueDate(j),
+								aDbms.assignVisible(j), 
+								aDbms.assignGradesVisible(j)
+								);
+
+						j++;
 					}
 				}
+
 				break;
+
 			default:
 				courses = null;
 				iID = null;
@@ -131,11 +168,15 @@ public class CourseManager implements DBMSAccessor
 	 *
 	 * Lists the courses in this course manager, outputting them to the standard output
 	 */
-	public String[] ListCourse(){
+	public String[] ListCourse()
+	{
 		Vector<String> courseList = new Vector<String>();
+
 		String[] listOfCourses;
+
 		int i = 0;
-		while( i < c.size()){
+		while( i < c.size() )
+		{
 			courseList.add(c.elementAt(i).getCourseName());
 			i++;
 		}

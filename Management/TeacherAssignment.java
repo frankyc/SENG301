@@ -16,13 +16,15 @@ public class TeacherAssignment extends CourseAssignment implements DBMSAccessor{
 	static final int ISLATE = 1;
 	static final int STUDENTGRADE = 2;
 
-	TeacherAssignment(Course cor,String desc,Calendar date,boolean assVis,boolean gradeVis) throws AssignmentNotExistException{
-		super(cor,desc, date, assVis, gradeVis);
+	TeacherAssignment(int assignNum, Course cor,String desc,Calendar date,boolean assVis,boolean gradeVis) throws AssignmentNotExistException
+	{
+		super(assignNum, cor,desc, date, assVis, gradeVis);
+
 		String[] students;
 		students = sDbms.getStudentsInCourse(cor.getCourseName());
 		for(int i =0; i< students.length;i++){
 			//TODO needs false to be late or not
-			sa.addElement(new StudentAssignment(students[i], false,cor,desc, date, assVis, gradeVis));
+			sa.addElement( new StudentAssignment(assignNum, students[i], false, cor, desc, date, assVis, gradeVis) );
 		}
 	}
 	
@@ -103,10 +105,12 @@ public class TeacherAssignment extends CourseAssignment implements DBMSAccessor{
 	 *
 	 * @param path - The path for the source file
 	 */
-	public void uploadGrades(String path) throws AssignmentNotExistException{
+	public void uploadGrades(String path) throws AssignmentNotExistException
+	{
 		uADbms= new UserAssignmentDbms(this.getInstructorId(),this.getCourseName(),this.getAssignmentNumber());
 		String[] studentsGrades = fM.readGradeFile(path);
 		String[] students;
+
 		for(int i=0; i< studentsGrades.length;i++){
 			students = studentsGrades[i].split("\t");
 			if(students[STUDENTID].compareTo("true") == 0)

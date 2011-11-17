@@ -14,7 +14,7 @@ public class DueDate {
 	 *
 	 * @return - True if the current date is past due date, false otherwise
 	 */
-	public boolean pastDue(Calendar dueDate)
+	public static boolean pastDue(Calendar dueDate)
 	{
 		Calendar cal = Calendar.getInstance();
 

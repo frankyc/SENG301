@@ -16,8 +16,9 @@ import Management.*;
 abstract class Menu
 {
 	// CONSTANTS
-	protected static final int QUIT = -1;
+	protected static final int QUIT = -3;
 	protected static final int INVALID = -2;
+	protected static final int UP = -1;
 
 
 	// VARS
@@ -30,14 +31,23 @@ abstract class Menu
 	// DEFINED METHODS
 	public void processInput()
 	{
-		menuItems[selectedMenuItem].run();
+		if( selectedMenuItem >= 0 )
+			menuItems[selectedMenuItem].run();
 	}
 
 
 	public void run()
 	{
+		selectedMenuItem = 0;
+
 		while( selectedMenuItem != QUIT )
 		{
+			if( selectedMenuItem == UP )
+			{
+				selectedMenuItem = 0;
+				return;
+			}
+
 			display();
 
 			if( selectedMenuItem == INVALID )
@@ -85,9 +95,14 @@ abstract class Menu
 		// Check input for errors
 		try
 		{
-			if( input.compareTo( "q" ) == 0 )
+			if( isQuit(input) )
 			{
 				selectedMenuItem = QUIT;
+				return;
+			}
+			else if( input.compareTo( "0" ) == 0 )
+			{
+				selectedMenuItem = UP;
 				return;
 			}
 
@@ -182,15 +197,20 @@ abstract class Menu
 	{
 		for( int i = 0; i < items.length; i++ )
 		{
-			String output = null;
+			String output = "";
 
 			if( numberItems )
 				output = i+1 + ". ";
 			
-			 output = output + items[i].toString();
+			 output = output + items[i].toString() ;
 
 			 System.out.println( output );
 		}
+
+		System.out.println( "" );
+
+		if( numberItems )
+			System.out.println( "0. Up one level.\n" );
 
 	}
 
@@ -208,11 +228,14 @@ abstract class Menu
 	 *
 	 * @return - The assignment chosen or null if they chose to quit the menu
 	 */
-	protected Course getCourseChoice()
+	protected Course getCourseChoice() throws NoCoursesException
 	{
 		outputHeader( "Choose the Course to Work In" );
 
 		String[] courses = courseManager.ListCourse();
+
+		if( courses == null || courses.length == 0 )
+			throw new NoCoursesException();
 
 		outputMenuItems( courses, true /* numberItems */ );
 

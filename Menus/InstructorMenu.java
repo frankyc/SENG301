@@ -50,11 +50,9 @@ public class InstructorMenu extends TeachingStaffMenu
 	}
 
 
+	
 	void createAssignment()
 	{
-		System.out.println( "Creating assignment!" );
-		return;
-		/*
 		String name = null;
 		String description = null;
 		String year = null;
@@ -66,6 +64,8 @@ public class InstructorMenu extends TeachingStaffMenu
 		Calendar dueDate = null;
 
 		outputHeader( curCourse.getCourseName() + " - Create an Assignment" );
+
+		System.out.println( "Enter 'q' at any time to stop creating the assignment.\n" );
 
 		System.out.print( "Enter the course name: " );
 		name = getInputCore();
@@ -111,7 +111,9 @@ public class InstructorMenu extends TeachingStaffMenu
 
 		dueDate = new GregorianCalendar( Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(hour), Integer.parseInt(minute) );
 
-		curCourse.createAssignment( description, dueDate, false, false );*/
+		curCourse.createAssignment( description, dueDate, false, false );
+
+		System.out.println( "Course created!\n" );
 	}
 
 
