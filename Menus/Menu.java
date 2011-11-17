@@ -271,4 +271,12 @@ abstract class Menu
 
 		System.out.println( underline );
 	}
+
+
+
+	protected void reportError( String message )
+	{
+		System.out.println( message );
+		pressEnter();
+	}
 }

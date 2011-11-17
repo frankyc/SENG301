@@ -55,7 +55,7 @@ public class StudentMenu extends Menu
 		}
 		catch( NoCoursesException e )
 		{
-			System.out.println( "No courses to submit for." );
+			reportError( "No courses to submit for." );
 			return;
 		}
 
@@ -66,7 +66,7 @@ public class StudentMenu extends Menu
 		}
 		catch( NoAssignmentsException e )
 		{
-			System.out.println( "This course has assignments to submit to." );
+			reportError( "This course has assignments to submit to." );
 			return;
 		}
 
@@ -101,7 +101,7 @@ public class StudentMenu extends Menu
 		}
 		catch( NoCoursesException e )
 		{
-			System.out.println( "No courses to delete for." );
+			reportError( "No courses to delete for." );
 			return;
 		}
 
@@ -109,13 +109,13 @@ public class StudentMenu extends Menu
 		{
 			if( (assignment = getAssignmentChoice( curCourse )) == null )
 			{
-				System.out.println( "Submission not deleted." );
+				reportError( "Submission not deleted." );
 				return;
 			}
 		}
 		catch( NoAssignmentsException e )
 		{
-			System.out.println( "No assignments to delete for." );
+			reportError( "No assignments to delete for." );
 			return;
 		}
 
