@@ -22,12 +22,36 @@ public class TeacherAssignment extends CourseAssignment implements DBMSAccessor{
 
 		String[] students;
 		students = sDbms.getStudentsInCourse(cor.getCourseName());
-		for(int i =0; i< students.length;i++){
+
+		sa = new Vector<StudentAssignment>();
+
+		if( students != null )
+		{
 			//TODO needs false to be late or not
-			sa.addElement( new StudentAssignment(assignNum, students[i], false, cor, desc, date, assVis, gradeVis) );
+			for(int i =0; i< students.length;i++)
+			{
+				sa.addElement( new StudentAssignment(assignNum, students[i], false, cor, desc, date, assVis, gradeVis) );
+			}
 		}
 	}
-	
+
+	TeacherAssignment( CourseAssignment ca ) throws AssignmentNotExistException
+	{
+		super( ca.getAssignmentNumber(), ca.getCourse(), ca.getDescription(), ca.getDueDate(), ca.isVisible(), ca.gradesVisible() );
+
+		sa = new Vector<StudentAssignment>();
+
+		String[] students = sDbms.getStudentsInCourse( ca.getCourse().getCourseName());
+
+		if( students != null )
+		{
+			for( int i = 0; i < students.length; i++ )
+			{
+				sa.addElement( new StudentAssignment( ca.getAssignmentNumber(), students[i], false, ca.getCourse(), ca.getDescription(), ca.getDueDate(), ca.isVisible(), ca.gradesVisible() ) );
+			}
+		}
+	}
+
 	/**
 	 * //TODO is this setting the grade visibility to whatever is passed in,
 	 * 	or only setting it to on?  If it's whatever is passed in then
@@ -41,7 +65,7 @@ public class TeacherAssignment extends CourseAssignment implements DBMSAccessor{
 	 */
 	public void releaseGrade(boolean T_F) throws AssignmentNotExistException{
 		for(int i =0; i< sa.size(); i++){
-		sa.elementAt(i).setGradeVisability(T_F);
+			sa.elementAt(i).setGradeVisability(T_F);
 		}
 	}
 
@@ -60,7 +84,7 @@ public class TeacherAssignment extends CourseAssignment implements DBMSAccessor{
 			setCommentVisability(true);
 		}
 	}
-	
+
 	/**
 	 * sets ALL Comment visibility to true or false
 	 *
@@ -97,7 +121,7 @@ public class TeacherAssignment extends CourseAssignment implements DBMSAccessor{
 		studentsGrades.toArray( sgrades );
 		fM.writeGradeFile(path, sgrades);
 	}
-	
+
 
 
 	/**
@@ -127,17 +151,23 @@ public class TeacherAssignment extends CourseAssignment implements DBMSAccessor{
 			}
 		}
 	}
-	
+
 
 
 	/**
-	 * // TODO empty function?  Do we need it?
-	 * //Franky: its not needed but we could implement it to get a single assignment.
+	 * Gets a specific student's assignment
 	 */
-	public void getAssignment(String id, String course, String assNum){
+	public StudentAssignment getStudentAssignment( String sId )
+	{
+		for( int i = 0; i < sa.size(); i++ )
+		{
+			if( sa.elementAt(i).getId().compareTo( sId ) == 0 )
+				return sa.elementAt(i);
+		}
 		
+		return null;
 	}
-	
+
 
 
 	/**

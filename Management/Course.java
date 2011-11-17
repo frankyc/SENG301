@@ -10,6 +10,7 @@ import java.util.Vector;
 public class Course implements DBMSAccessor{
 	private String courseName;
 	DirectoryManager dM;
+	AssignmentDbms aDbms;
 	
 	private Vector<CourseAssignment> ca;
 	private String iId;
@@ -37,7 +38,7 @@ public class Course implements DBMSAccessor{
 		ca = null;
 		
 
-		AssignmentDbms aDbms = new AssignmentDbms( instrID, cName );
+		aDbms = new AssignmentDbms( instrID, cName );
 		
 		ca = new Vector<CourseAssignment>();
 	}
@@ -70,6 +71,8 @@ public class Course implements DBMSAccessor{
 
 		dM = new DirectoryManager (iId);
 		dM.createAssignDir( courseName, newAssignment.getAssignmentNumber() );
+
+		aDbms.add( assVis, gradeVis, false, desc, date );
 	}
 	
 
@@ -151,6 +154,29 @@ public class Course implements DBMSAccessor{
 				return ca.elementAt(i);
 			}
 		}
+		return null;
+	}
+
+
+
+	public TeacherAssignment getTeacherAssignment( int assNum )
+	{
+		try
+		{
+		for( int i = 0; i < ca.size(); i++ )
+		{
+			if( ca.elementAt(i).getAssignmentNumber() == assNum )
+				return new TeacherAssignment( ca.elementAt(i) );
+		}
+		}
+		catch( AssignmentNotExistException e )
+		{
+			System.out.println( "ERROR: Can't find the assignment.  Exiting." );
+			
+			e.printStackTrace();
+			System.exit(1);
+		}
+
 		return null;
 	}
 	

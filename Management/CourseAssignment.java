@@ -68,6 +68,36 @@ public class CourseAssignment implements DBMSAccessor
 
 
 	/**
+	 * @return - The course this assignment belongs to
+	 */
+	public Course getCourse()
+	{
+		return c;
+	}
+
+
+	/**
+	 * @return - Whether the assignment is visible or not
+	 */
+	public boolean isVisible()
+	{
+		return assignmentVisable;
+	}
+
+
+
+
+	/**
+	 * @return whether the grades for this assignment are visible or not
+	 */
+	public boolean gradesVisible()
+	{
+		return gradesVisable;
+	}
+
+
+
+	/**
 	 * Sets the grade visibility for this assignment
 	 *
 	 * @param T_F - The new grade visibility; true if the grades should be visible, false otherwise

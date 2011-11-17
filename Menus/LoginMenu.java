@@ -52,7 +52,7 @@ public class LoginMenu extends Menu
 	{
 		Menu.clearScreen();
 
-		outputMenuItems( false );
+		outputMenuItems( menuItems, false );
 
 		Menu.pressEnter();
 	}

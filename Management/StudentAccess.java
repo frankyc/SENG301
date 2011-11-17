@@ -90,4 +90,24 @@ public class StudentAccess extends CourseAssignment{
 
 		fM.submitFile( this.getCourseName(), this.getAssignmentNumber(), DueDate.pastDue( this.getDueDate() ), srcPath, sID );
 	}
+
+
+
+	/**
+	 * @return - The grade for this assignment
+	 */
+	public String getGrade()
+	{
+		return grade;
+	}
+
+
+
+	/**
+	 * @return - The student ID for this assignment
+	 */
+	public String getId()
+	{
+		return sID;
+	}
 }

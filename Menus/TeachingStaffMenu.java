@@ -46,6 +46,52 @@ public abstract class TeachingStaffMenu extends Menu
 		}
 	};
 
+	public void run()
+	{
+		selectedMenuItem = 0;
+
+		while( selectedMenuItem != QUIT )
+		{
+			if( selectedMenuItem == UP )
+			{
+				selectedMenuItem = 0;
+				return;
+			}
+
+			try
+			{
+				curCourse = getCourseChoice();
+
+				assignment = getAssignment( curCourse );
+			}
+			catch( NoCoursesException e )
+			{
+				reportError( "No courses to perform actions on." );
+
+				return;
+			}
+			catch( NoAssignmentsException e )
+			{
+				reportError( "No assignments to work with." );
+
+				selectedMenuItem = 0;
+				continue;
+			}
+
+			while( selectedMenuItem != QUIT )
+			{
+				display();
+
+				if( selectedMenuItem == INVALID )
+					getInput( true /* Invalid */ );
+				else
+					getInput();
+
+				processInput();
+			}
+		}
+	}
+
 	void commentOnSubmission()
 	{
 		outputHeader( "Comment on Submitted Assignment" );
@@ -61,6 +107,8 @@ public abstract class TeachingStaffMenu extends Menu
 			try
 			{
 				assignment.setCommentVisability( false );
+
+				reportError( "Comments are not visible." );
 			}
 			catch( AssignmentNotExistException e ) {}
 		}
@@ -69,6 +117,8 @@ public abstract class TeachingStaffMenu extends Menu
 			try
 			{
 				assignment.setCommentVisability( true );
+
+				reportError( "Comments are visible." );
 			}
 			catch( AssignmentNotExistException e ) {}
 		}
@@ -76,7 +126,34 @@ public abstract class TeachingStaffMenu extends Menu
 
 	void assignGrade()
 	{
-		System.out.println( "Assign Grade Here!" );
+		outputHeader( "Assign a Grade" );
+
+		System.out.print( "Please enter the ID of the student you would like to assign a grade to: " );
+		String sId = getInputCore();
+
+		StudentAssignment studentAssignment = null;
+
+		studentAssignment = assignment.getStudentAssignment( sId );
+
+		if( studentAssignment == null )
+		{
+			reportError( "This student has not submitted an assignment for grading." );
+			return;
+		}
+
+		if( studentAssignment.getGrade() != null && studentAssignment.getGrade().compareTo( "" ) != 0 )
+		{
+			System.out.println( "Current grade: " + studentAssignment.getGrade() );
+			System.out.println( "Cannot assign grade since one exists." );
+
+			pressEnter();
+			return;
+		}
+
+		System.out.print( "Please enter the grade you would like to assign: " );
+		String grade = getInputCore();
+
+		studentAssignment.assignGrades( grade );
 	}
 
 	void uploadGrades()
@@ -128,6 +205,8 @@ public abstract class TeachingStaffMenu extends Menu
 
 		while( selectedMenuItem != QUIT )
 		{
+			System.out.println( "You have " + numAssignments + " assignments to pick from.\n" );
+
 			if( selectedMenuItem != INVALID )
 				getInput( numAssignments );
 			else
@@ -136,7 +215,7 @@ public abstract class TeachingStaffMenu extends Menu
 			if( selectedMenuItem == INVALID )
 				continue;
 
-			return (TeacherAssignment) c.getAssignment( selectedMenuItem + 1 );
+			return c.getTeacherAssignment( selectedMenuItem + 1 );
 		}
 
 		return null;

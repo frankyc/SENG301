@@ -16,6 +16,7 @@ import DBMS.AssignmentNotExistException;
 public class InstructorMenu extends TeachingStaffMenu
 {
 	private Instructor instructor;
+	private MenuItem[] courseItems;
 
 
 	public InstructorMenu( Instructor i )
@@ -28,13 +29,22 @@ public class InstructorMenu extends TeachingStaffMenu
 		}
 		catch( AssignmentNotExistException e ) {}
 
-		MenuItem[] newMenuItems = 
+		courseItems = new MenuItem[]
 		{
 			new MenuItem( "Create a New Assignment", this )
 			{
 				public void run() { ((InstructorMenu) menu).createAssignment(); }
 			},
 
+			new MenuItem( "Work with an Existing Assignment", this )
+			{
+				public void run() { ((InstructorMenu) menu).existingAssignment(); }
+			}
+		};
+
+
+		MenuItem[] newMenuItems = new MenuItem[]
+		{
 			new MenuItem("Release Grades", this )
 			{
 				public void run() { ((InstructorMenu) menu).releaseGrades(); }
@@ -50,61 +60,129 @@ public class InstructorMenu extends TeachingStaffMenu
 	}
 
 
+	public void run()
+	{
+		selectedMenuItem = 0;
+
+		while( selectedMenuItem != QUIT )
+		{
+			if( selectedMenuItem == UP )
+			{
+				selectedMenuItem = 0;
+				return;
+			}
+
+			try
+			{
+				curCourse = getCourseChoice();
+			}
+			catch( NoCoursesException e )
+			{
+				reportError( "No courses to perform actions on." );
+
+				return;
+			}
+
+
+			if( selectedMenuItem == QUIT )
+				return;
+			else if( selectedMenuItem == UP )
+			{
+				selectedMenuItem = 0;
+				return;
+			}
+
+
+			outputHeader( curCourse.getCourseName() );
+
+			outputMenuItems( courseItems, true /* numberItems */ );
+
+			getInput( courseItems.length );
+
+			if( selectedMenuItem >= 0 )
+				courseItems[selectedMenuItem].run();
+		}
+	}
+
+
+
+	void existingAssignment()
+	{
+		try
+		{
+			assignment = getAssignment( curCourse );
+		}
+		catch( NoAssignmentsException e )
+		{
+			reportError( "No assignments to work with in this course." );
+			return;
+		}
+
+		selectedMenuItem = 0;
+		while( selectedMenuItem != QUIT )
+		{
+			if( selectedMenuItem == UP )
+			{
+				selectedMenuItem = 0;
+				return;
+			}
+			
+			display();
+
+			if( selectedMenuItem == INVALID )
+				getInput( true /* invalid */ );
+			else
+				getInput();
+			
+			processInput();
+		}
+	}
+		
+
+
 	
 	void createAssignment()
 	{
-		String name = null;
-		String description = null;
-		String year = null;
-		String month = null;
-		String day = null;
-		String hour = null;
-		String minute = null;
-
 		Calendar dueDate = null;
 
 		outputHeader( curCourse.getCourseName() + " - Create an Assignment" );
 
 		System.out.println( "Enter 'q' at any time to stop creating the assignment.\n" );
 
-		System.out.print( "Enter the course name: " );
-		name = getInputCore();
+		System.out.println( "Creating assignment number: " + (curCourse.totalNumberOfAssignments() + 1) + "\n" );
 
-		if( isQuit(name) )
-			return;
-
-		System.out.print( "Enter the course description: " );
-		description = getInputCore();
+		System.out.print( "Enter the assignment description: " );
+		String description = getInputCore();
 
 		if( isQuit(description) )
 			return;
 
 		System.out.print( "Enter year due: " );
-		year = getInputCore();
+		String year = getInputCore();
 
 		if( isQuit(year) )
 			return;
 
 		System.out.print( "Enter month due: " );
-		month = getInputCore();
+		String month = getInputCore();
 
 		if( isQuit(month) )
 			return;
 
 		System.out.print( "Enter day due: " );
-		month = getInputCore();
+		String day = getInputCore();
 
 		if( isQuit(day) )
 			return;
 
 		System.out.print( "Enter hour due: " );
-		hour = getInputCore();
+		String hour = getInputCore();
 
 		if( isQuit(hour) )
 			return;
 
 		System.out.print( "Enter minute due: " );
-		minute = getInputCore();
+		String minute = getInputCore();
 
 		if( isQuit(minute) )
 			return;
@@ -113,7 +191,8 @@ public class InstructorMenu extends TeachingStaffMenu
 
 		curCourse.createAssignment( description, dueDate, false, false );
 
-		System.out.println( "Course created!\n" );
+		System.out.println( "Assignment " + curCourse.totalNumberOfAssignments() + " created!\n" );
+		pressEnter();
 	}
 
 

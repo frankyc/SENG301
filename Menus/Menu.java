@@ -62,9 +62,14 @@ abstract class Menu
 
 	protected void display()
 	{
+		display( menuItems );
+	}
+
+	protected void display( MenuItem[] items )
+	{
 		clearScreen();
 
-		outputMenuItems( true /* Number items */ );	
+		outputMenuItems( items, true /* Number items */ );	
 	}
 
 
@@ -181,14 +186,14 @@ abstract class Menu
 	 * @param numberItems - If true will prepend numbers in front of each menu item starting with 0.
 	 * 			If false will output each menu item on a new line with no modification
 	 */
-	protected void outputMenuItems( boolean numberItems )
+	protected void outputMenuItems( MenuItem[] items, boolean numberItems )
 	{
-		String[] items = new String[ menuItems.length ];
+		String[] sItems = new String[ items.length ];
 
-		for( int i = 0; i < menuItems.length; i++ )
-			items[i] = menuItems[i].toString();
+		for( int i = 0; i < items.length; i++ )
+			sItems[i] = items[i].toString();
 
-		outputMenuItems( items, numberItems );
+		outputMenuItems( sItems, numberItems );
 	}
 
 
@@ -248,7 +253,7 @@ abstract class Menu
 			else
 				getInput( courses.length, true );
 
-			if( selectedMenuItem == INVALID )
+			if( selectedMenuItem == QUIT || selectedMenuItem == INVALID )
 				continue;
 
 			return courseManager.getCourse( courses[selectedMenuItem] );

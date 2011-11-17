@@ -207,14 +207,12 @@ public class CourseManager implements DBMSAccessor
 	 * @return - The course specified with courseName
 	 */
 	public Course getCourse(String courseName){
-		int i =0;
-		while(i < c.size()){
-			i++;
+		for( int i = 0; i < c.size(); i++ )
+		{
 			if(c.elementAt(i).getCourseName() == courseName)
-			{
 				return c.elementAt(i);
-			}
 		}
+
 		return null;
 	}
 }
