@@ -49,13 +49,6 @@ public class UserDbms extends BaseDbms
 	 */
 	public boolean exists( String id )
 	{
-		/*if( dbLines == null )
-			System.out.println( "No dbLines!!" );
-		else if( dbLines.length > 0 )
-			System.out.println( "dbLines I guess? lines = " + dbLines.length );
-		else
-			System.out.println( "No dbLines based on length!!" );*/
-
 		for( int i = 0; i < dbLines.length; i++ )
 		{
 			String[] lineParts = dbLines[i].split( "\t" );
