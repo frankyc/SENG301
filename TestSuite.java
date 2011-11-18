@@ -6,7 +6,7 @@ import FileManagement.*;
 import Management.*;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({DirectoryManagerTest.class, FileManagerTest.class,CourseAssignmentTest.class,StudentAccessTest.class,
-	DueDateTest.class})
+	DueDateTest.class,CourseManagerTest.class})
 public class TestSuite {
   //nothing
 }
