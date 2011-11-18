@@ -135,7 +135,14 @@ public class LoginMenu extends Menu
 	private void getPassword()
 	{
 		System.out.print( "Please enter your password: " );
+		BufferedReader in = new BufferedReader( new InputStreamReader( System.in ) );
 
-		password = new String( System.console().readPassword() );
+		
+		try {
+			password = in.readLine();
+		} catch (IOException e) {
+			System.out.println( "Unable to read in Password.  Please restart the program and try again." );
+			
+		}
 	}
 }
