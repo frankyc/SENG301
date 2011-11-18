@@ -294,7 +294,7 @@ public class FileManager
 		if( fileList != null )
 		{
 			for( int i = 0; i < fileList.length; i++ )
-				copyFile( fileList[i], destLate );
+				copyFile( fileList[i], new File(destLate.getAbsolutePath() + "/" + fileList[i].getName()) );
 		}
 
 		return true;
