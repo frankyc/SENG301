@@ -129,7 +129,7 @@ public class TeacherAssignment extends CourseAssignment implements DBMSAccessor{
 	 *
 	 * @param path - The path for the source file
 	 */
-	public void uploadGrades(String path) throws AssignmentNotExistException
+	public void uploadGrades(String path) throws AssignmentNotExistException, FileNotFoundException
 	{
 		uADbms= new UserAssignmentDbms(this.getInstructorId(),this.getCourseName(),this.getAssignmentNumber());
 		String[] studentsGrades = fM.readGradeFile(path);

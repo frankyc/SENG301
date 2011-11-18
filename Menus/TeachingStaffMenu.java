@@ -13,6 +13,8 @@ package Menus;
 import Users.*;
 import Management.*;
 import DBMS.AssignmentNotExistException;
+import java.io.*;
+import FileManagement.FileExistsException;
 
 public abstract class TeachingStaffMenu extends Menu
 {
@@ -158,12 +160,64 @@ public abstract class TeachingStaffMenu extends Menu
 
 	void uploadGrades()
 	{
-		System.out.println( "Upload grades here!" );
+		outputHeader( "Upload Grades" );
+
+
+		boolean validPath = false;
+		while( !validPath )
+		{
+			try
+			{
+				System.out.print( "Enter the source path for the grades file (q to cancel): " );
+				String path = getInputCore();
+
+				if( isQuit(path) )
+					return;
+					
+
+				assignment.uploadGrades( path );
+				validPath = true;
+			}
+			catch( FileNotFoundException e )
+			{
+				System.out.println( "File could not be found.  Please try again." );
+			}
+			catch( AssignmentNotExistException e )
+			{}
+		}
+
+		reportError( "Grades successfully uploaded." );
 	}
 
 	void downloadGrades()
 	{
-		System.out.println( "Download grades here!" );
+		String path = null;
+
+		outputHeader( "DownloadGrades" );
+
+		boolean validPath = false;
+		while( !validPath )
+		{
+			try
+			{
+				System.out.print( "Enter the destination path for the grades file (q to cancel): " );
+				path = getInputCore();
+
+				if( isQuit(path) )
+					return;
+					
+
+				assignment.downloadGrades( path );
+				validPath = true;
+			}
+			catch( FileExistsException e )
+			{
+				System.out.println( "Destination file already exists.  Please try again." );
+			}
+		}
+
+		reportError( "Grades successfully downloaded to: " + path + "." );
+
 	}
 
 	protected MenuItem[] joinMenuItems( MenuItem[] newMenuItems )

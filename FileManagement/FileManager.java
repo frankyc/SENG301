@@ -57,7 +57,14 @@ public class FileManager
 
 		String[] readGrades = null;
 
-		readGrades = fm.readGradeFile( gradesPath );
+		try
+		{
+			readGrades = fm.readGradeFile( gradesPath );
+		}
+		catch( FileNotFoundException e )
+		{
+			System.out.println( "Whoops! File doesn't exist...umm...might wanna fix that." );
+		}
 
 		if( readGrades.length != grades.length )
 		{
@@ -216,7 +223,7 @@ public class FileManager
 	 * @param path - The path for the grade file
 	 * 			(file should follow same formatting as writeGradeFile())
 	 */
-	public String[] readGradeFile( String path )
+	public String[] readGradeFile( String path ) throws FileNotFoundException
 	{
 		Vector<String> lines = new Vector<String>();
 
@@ -228,6 +235,10 @@ public class FileManager
 
 			while( (line = in.readLine()) != null )
 				lines.addElement( line );
+		}
+		catch( FileNotFoundException e )
+		{
+			throw e;
 		}
 		catch( IOException e )
 		{
