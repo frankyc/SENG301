@@ -16,9 +16,9 @@ import static org.junit.Assert.*;
 
 public class UserAssignmentDbmsTest
 {
-	private UserAssignment d;
+	private UserAssignmentDbms d;
 	private Calendar dueDate;
-	private static String dbPath = System.getProperty( "user.dir" ) + "/res/Test/SENG301/AssignmentList.txt";
+	private static String dbPath = System.getProperty( "user.dir" ) + "/res/Test/SENG301/1/AssignmentList.txt";
 
 
 	public static void main( String[] args )
@@ -77,7 +77,7 @@ public class UserAssignmentDbmsTest
 	@Before
 		public void initialize()
 		{
-			d = new UserAssignmentDbms();
+			d = new UserAssignmentDbms("Test", "SENG301", 1);
 		}
 
 
@@ -152,7 +152,7 @@ public class UserAssignmentDbmsTest
 		{
 			outputAssignments();
 
-			assertTrue( d.exists( 1, false );
+			assertTrue( d.exists( "2", false ) );
 		}
 
 	@Test
@@ -160,7 +160,7 @@ public class UserAssignmentDbmsTest
 		{
 			outputAssignments();
 			
-			assertFalse( d.exists( 1, true );
+			assertFalse( d.exists( "13", false ) );
 		}
 
 
@@ -169,16 +169,16 @@ public class UserAssignmentDbmsTest
 		{
 			outputAssignments();
 
-			assertTrue( d.getGrade( 3, false ).compareTo("A") == 0 );
+			assertTrue( d.getGrade( "3", false ).compareTo("A") == 0 );
 		}
 
 
 	@Test
-		public void getCommentsTest
+		public void getCommentsTest() throws AssignmentNotExistException
 		{
 			outputAssignments();
 
-			assertTrue( d.getComments( 2, false ).compareTo("Comments") == 0 );
+			assertTrue( d.getComments( "2", false ).compareTo("Comments") == 0 );
 		}
 
 
