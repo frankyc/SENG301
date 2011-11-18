@@ -76,6 +76,16 @@ public class StudentMenu extends Menu
 		}
 
 
+		if( assignment.submitted() )
+		{
+			if( !confirm( "Submission already exists for this assignment.  Overwrite?" ) )
+			{
+				reportError( "No submission made." );
+				return;
+			}
+		}
+
+
 		boolean validPath = false;
 
 		while( !validPath )
@@ -87,6 +97,8 @@ public class StudentMenu extends Menu
 			{
 				assignment.submitAssignment( path );
 				validPath = true;
+
+				reportError( "File successfully submitted." );
 			}
 			catch( FileNotFoundException e )
 			{
@@ -125,18 +137,50 @@ public class StudentMenu extends Menu
 			return;
 		}
 
-		System.out.println( "Are you sure you want to delete this submission? (y/n)" );
-		String choice = getInputCore();
+		if( !assignment.submitted() )
+		{
+			reportError( "No assignment submitted." );
+			return;
+		}
 
-		if( choice.compareTo("y") == 0 )
+		if( confirm( "Are you sure you want to delete this submission?" ) )
 		{
 			if( !assignment.deleteStudentAssignment() )
 				System.out.println( "Unable to delete submission since it is after the due date." );
 			else
-				System.out.println( "Submission successfully deleted." );
+				reportError( "Submission successfully deleted." );
 		}
 		else
-			System.out.println( "Submission not deleted." );
+			reportError( "Submission not deleted." );
+	}
+
+
+	/**
+	 * Gets confirmation from the user for an action, specifically asking for "y" or "n"
+	 *
+	 * @param message - The message to send to the user as to what they are confirming
+	 *
+	 * @return - True if the user agreed, false otherwise
+	 */
+	boolean confirm( String message )
+	{
+		boolean invalidInput = true;
+
+		while( invalidInput )
+		{
+			System.out.print( message + " (y/n)\t" );
+			String input = getInputCore();
+
+			if( input.compareTo( "y" ) != 0 && input.compareTo( "n" ) != 0 )
+				System.out.println( "\nInvalid input." );
+			else
+			{
+				if( input.compareTo( "y" ) == 0 )
+					return true;
+			}
+		}
+		
+		return false;
 	}
 
 

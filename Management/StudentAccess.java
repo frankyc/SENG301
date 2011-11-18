@@ -14,6 +14,8 @@ public class StudentAccess extends CourseAssignment{
 	protected String path;
 	protected FileManager fM;
 	protected UserAssignmentDbms uADbms;
+	protected boolean submitted;
+	protected boolean late;
 	
 
 
@@ -32,22 +34,40 @@ public class StudentAccess extends CourseAssignment{
 			Calendar date,
 			boolean assVis,
 			boolean gradeVis
-			) throws AssignmentNotExistException
+			) 
 	{
 		super(assignNum, cor,desc,date,assVis,gradeVis);
 
 		sID = s;
-		UserAssignmentDbms uADbms = new UserAssignmentDbms(tDbms.getInstructorId(sDbms.getTaId(sID, this.getCourseName()), this.getCourseName()),this.getCourseName(),this.getAssignmentNumber());
+		this.late = late;
 
-		if( uADbms.exists( sID, late ) )
+		uADbms = new UserAssignmentDbms(
+				tDbms.getInstructorId(sDbms.getTaId(sID, this.getCourseName()), this.getCourseName()),
+				this.getCourseName(),
+				this.getAssignmentNumber()
+				);
+
+		try
 		{
-			grade = uADbms.getGrade(sID, late);
-			comment = uADbms.getComments(sID, late);
+			if( uADbms.exists( sID, late ) )
+			{
+				grade = uADbms.getGrade(sID, late);
+				comment = uADbms.getComments(sID, late);
+				submitted = true;
+			}
+			else
+			{
+				grade = "-";
+				comment = "-";
+				submitted = false;
+			}
 		}
-		else
+		catch( AssignmentNotExistException e )
 		{
-			grade = "-";
-			comment = "-";
+			System.out.println( "Something went wrong!" );
+			
+			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
@@ -71,9 +91,13 @@ public class StudentAccess extends CourseAssignment{
 		if( DueDate.pastDue( this.getDueDate() ) )
 			return false;
 
+		FileManager fm = new FileManager( c.getInstructorId() );
+
 		try
 		{
 			uADbms.deleteSubmission( sID, false /* late */ );
+
+			fm.deleteSubmission( c.getCourseName(), assignmentNumber, late, sID );
 		}
 		catch( AssignmentNotExistException e )
 		{
@@ -81,6 +105,8 @@ public class StudentAccess extends CourseAssignment{
 
 			e.printStackTrace();
 		}
+
+		submitted = false;
 
 		return true;
 	}
@@ -97,6 +123,16 @@ public class StudentAccess extends CourseAssignment{
 		fM = new FileManager( c.getInstructorId() );
 
 		fM.submitFile( this.getCourseName(), this.getAssignmentNumber(), DueDate.pastDue( this.getDueDate() ), srcPath, sID );
+
+		if( uADbms == null )
+		{
+			System.out.println( "DBMS is NULL" );
+			System.exit(1);
+		}
+
+		uADbms.add( sID, late );
+
+		submitted = true;
 	}
 
 
@@ -117,5 +153,14 @@ public class StudentAccess extends CourseAssignment{
 	public String getId()
 	{
 		return sID;
+	}
+
+
+	/**
+	 * @return - True if this assignment has a submission associated with it, false otherwise
+	 */
+	public boolean submitted()
+	{
+		return submitted;
 	}
 }
