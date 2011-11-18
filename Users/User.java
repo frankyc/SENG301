@@ -38,7 +38,7 @@ public abstract class User{
 	public String getName(){
 		return userName;
 	}
-	public String[] getPassword(){
+	public String[] getCourse(){
 		return course;
 	}
 	
