@@ -28,7 +28,7 @@ public class StudentMenu extends Menu
 				public void run() { ((StudentMenu) menu).submitAssignment(); }
 			},
 
-			new MenuItem("Delete a Submission" )
+			new MenuItem("Delete a Submission", this )
 			{
 				public void run() { ((StudentMenu) menu).deleteAssignment(); }
 			}
@@ -38,7 +38,12 @@ public class StudentMenu extends Menu
 		{
 			courseManager = new CourseManager( s.getName(), s.getPermissions() );
 		}
-		catch( AssignmentNotExistException e ) {}
+		catch( AssignmentNotExistException e )
+		{
+			System.out.println( "AssignmentNotExistException!!!!!" );
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 
@@ -66,17 +71,18 @@ public class StudentMenu extends Menu
 		}
 		catch( NoAssignmentsException e )
 		{
-			reportError( "This course has assignments to submit to." );
+			reportError( "This course has no assignments to submit to." );
 			return;
 		}
 
-		System.out.print( "Please enter the path of the file you would like to submit: " );
-		String path = getInputCore();
 
 		boolean validPath = false;
 
 		while( !validPath )
 		{
+			System.out.print( "Please enter the path of the file you would like to submit: " );
+			String path = getInputCore();
+
 			try
 			{
 				assignment.submitAssignment( path );
@@ -155,6 +161,8 @@ public class StudentMenu extends Menu
 
 		while( selectedMenuItem != QUIT )
 		{
+			System.out.println( "You have " + numAssignments + " assignments to pick from.\n" );
+
 			if( selectedMenuItem != INVALID )
 				getInput( numAssignments );
 			else

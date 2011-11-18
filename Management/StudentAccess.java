@@ -38,9 +38,17 @@ public class StudentAccess extends CourseAssignment{
 
 		sID = s;
 		UserAssignmentDbms uADbms = new UserAssignmentDbms(tDbms.getInstructorId(sDbms.getTaId(sID, this.getCourseName()), this.getCourseName()),this.getCourseName(),this.getAssignmentNumber());
-		grade = uADbms.getGrade(sID, late);
-		comment = uADbms.getComments(sID, late);
-	
+
+		if( uADbms.exists( sID, late ) )
+		{
+			grade = uADbms.getGrade(sID, late);
+			comment = uADbms.getComments(sID, late);
+		}
+		else
+		{
+			grade = "-";
+			comment = "-";
+		}
 	}
 
 

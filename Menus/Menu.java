@@ -207,7 +207,7 @@ abstract class Menu
 			if( numberItems )
 				output = i+1 + ". ";
 			
-			 output = output + items[i].toString() ;
+			 output = output + items[i].toString();
 
 			 System.out.println( output );
 		}
@@ -237,7 +237,14 @@ abstract class Menu
 	{
 		outputHeader( "Choose the Course to Work In" );
 
+		if( courseManager == null )
+		{
+			System.out.println( "courseManager == null!" );
+			System.exit(1);
+		}
+
 		String[] courses = courseManager.ListCourse();
+		
 
 		if( courses == null || courses.length == 0 )
 			throw new NoCoursesException();

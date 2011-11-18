@@ -29,7 +29,15 @@ public class CourseManager implements DBMSAccessor
 				iID = new String[courses.length];
 
 				for(int i=0; i< courses.length;i++)
+				{
 					iID[i]= tDbms.getInstructorId(sDbms.getTaId(iD, courses[i]),courses[i] );	
+
+					if( iID[i] == null )
+					{
+						System.out.println( "Null instructor ID!" );
+						System.exit(1);
+					}
+				}
 
 				for(int i =0; i < courses.length; i++)
 				{
@@ -189,11 +197,10 @@ public class CourseManager implements DBMSAccessor
 			courseList.add(c.elementAt(i).getCourseName());
 			i++;
 		}
+
 		listOfCourses = new String[courseList.size()];
-		for(i = 0; i < courseList.size(); i++){
-			courseList.toArray(listOfCourses);
-		}
-		return listOfCourses;
+
+		return courseList.toArray(listOfCourses);
 	}
 	
 
