@@ -103,7 +103,7 @@ public class TADbms extends UserDbms
 		{
 			String[] line = dbLines[i].split( "\t" );
 
-			if( line[0] == id )
+			if( line[0].compareTo(id)==0 )
 				return line[2];
 		}
 

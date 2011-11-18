@@ -103,9 +103,9 @@ public class StudentDbms extends UserDbms
 		for( int i = 0; i < dbLines.length; i++ )
 		{
 			String[] line = dbLines[i].split( "\t" );
-
-			if( line[0] == id )
+			if( line[0].compareTo(id) == 0){
 				return line[2];
+			}
 		}
 
 		return null;
@@ -130,7 +130,7 @@ public class StudentDbms extends UserDbms
 			String[] line = dbLines[i].split( "\t" );
 
 			if( line[1].compareTo( course ) == 0 )
-				ids.addElement( line[0] );
+					ids.addElement( line[0] );
 		}
 
 		if( ids.size() == 0 )
