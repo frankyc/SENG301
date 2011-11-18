@@ -14,7 +14,24 @@ public class FileManagerTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-	
+		File dir = new File("..//test");
+		if(!dir.exists())
+			dir.mkdir();
+		dir = new File("..//Test//TestDownloadAllSubmittedFiles//");
+		if(!dir.exists())
+			dir.mkdir();
+		dir = new File("..//Test//TestDownloadAllSubmittedFiles//Late");
+		if(!dir.exists())
+			dir.mkdir();
+		dir = new File("..//Test//TestDownloadAllSubmittedFiles//OnTime");
+		if(!dir.exists())
+			dir.mkdir();
+		dir = new File("..//Test//TestDownloadAllSubmittedFiles//Late//Student1-LoginListNonEncryptSubmitTest.txt");
+		if(!dir.exists())
+		dir.createNewFile();
+		dir = new File("..//Test//TestDownloadAllSubmittedFiles//OnTime//Student1-LoginListNonEncryptSubmitTest.txt");
+		if(!dir.exists())
+		dir.createNewFile();
 	}
 
 	@Before
@@ -106,16 +123,15 @@ public class FileManagerTest {
 		FileManager fm = new FileManager( "Admin" );
 		boolean downloadedTrueOrFalse = false;
 		try {
-			downloadedTrueOrFalse = fm.downloadAllSubmittedFiles("SENG301", 1 , "C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4" +
-					"\\Test\\TestDownloadAllSubmittedFiles\\");
+			downloadedTrueOrFalse = fm.downloadAllSubmittedFiles("SENG301", 1 , "..\\Test\\TestDownloadAllSubmittedFiles\\");
 		} catch (FileNotFoundException e) {
 			assertTrue(downloadedTrueOrFalse);
 			fail("File Could Not be downloaded");
 		}
-			File x = new File("C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Test\\TestDownloadAllSubmittedFiles\\Late");
+			File x = new File("..\\Test\\TestDownloadAllSubmittedFiles\\Late");
 			assertTrue(x.exists());
 			assertTrue(x.isDirectory());
-			x = new File("C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Test\\TestDownloadAllSubmittedFiles\\OnTime");
+			x = new File("..\\Test\\TestDownloadAllSubmittedFiles\\OnTime");
 			assertTrue(x.exists());
 			assertTrue(x.isDirectory());
 	}
@@ -125,32 +141,32 @@ public class FileManagerTest {
 		FileManager fM = new FileManager("Admin");
 		long original = 0,copy;
 		try {
-			fM.submitFile("SENG301", 3, true, "C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Test\\" +
+			fM.submitFile("SENG301", 3, true, "..\\Test\\" +
 					"TestDownloadAllSubmittedFiles\\Late\\Student1-LoginListNonEncryptSubmitTest.txt", "Student1");
-			original = new File("C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Test\\TestDownloadAllSubmittedFiles" +
+			original = new File("..\\Test\\TestDownloadAllSubmittedFiles" +
 					"\\Late\\Student1-LoginListNonEncryptSubmitTest.txt").length();
 
 		} catch (FileNotFoundException e1) {
 			fail("Error Could not Submit Late Assignment");
 		}
-			File x = new File("C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Assignment4\\res\\Admin\\SENG301\\3\\Late" +
+			File x = new File("..\\Assignment4\\res\\Admin\\SENG301\\3\\Late" +
 					"\\Student1-Student1-LoginListNonEncryptSubmitTest.txt");
 			assertTrue(x.exists());
-			copy= new File("C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Assignment4\\res\\Admin\\SENG301\\3\\Late" +
+			copy= new File("..\\Assignment4\\res\\Admin\\SENG301\\3\\Late" +
 					"\\Student1-Student1-LoginListNonEncryptSubmitTest.txt").length();
 			assertEquals("size should be the same if its a copy",original,copy);
 		try {
-			fM.submitFile("SENG301", 3, false, "C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Test\\TestDownloadAllSubmittedFiles" +
+			fM.submitFile("SENG301", 3, false, "..\\Test\\TestDownloadAllSubmittedFiles" +
 					"\\OnTime\\Student1-LoginListNonEncryptSubmitTest.txt", "Student1");
-			original = new File("C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Test\\TestDownloadAllSubmittedFiles" +
+			original = new File("..\\Test\\TestDownloadAllSubmittedFiles" +
 					"\\OnTime\\Student1-LoginListNonEncryptSubmitTest.txt").length();
 
 		} catch (FileNotFoundException e) {
 			fail("Error Could not Submit OnTime Assignment");
 		}
-			x = new File("C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Assignment4\\res\\Admin\\SENG301\\3" +
+			x = new File("..\\Assignment4\\res\\Admin\\SENG301\\3" +
 					"\\OnTime\\Student1-Student1-LoginListNonEncryptSubmitTest.txt");
-			copy= new File("C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Assignment4\\res\\Admin\\SENG301\\3" +
+			copy= new File("..\\Assignment4\\res\\Admin\\SENG301\\3" +
 					"\\OnTime\\Student1-Student1-LoginListNonEncryptSubmitTest.txt").length();
 			
 			assertTrue(x.exists());
@@ -162,9 +178,9 @@ public class FileManagerTest {
 		FileManager fM = new FileManager("Admin");
 		File x = null;
 		try {
-			fM.submitFile("SENG301", 4, false, "C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Test\\TestDownloadAllSubmittedFiles" +
+			fM.submitFile("SENG301", 4, false, "..\\Test\\TestDownloadAllSubmittedFiles" +
 					"\\OnTime\\Student1-LoginListNonEncryptSubmitTest.txt", "Student1");
-			x = new File("C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Assignment4\\res\\Admin\\SENG301\\4\\OnTime" +
+			x = new File("..\\Assignment4\\res\\Admin\\SENG301\\4\\OnTime" +
 					"\\Student1-Student1-LoginListNonEncryptSubmitTest.txt");
 			assertTrue(x.exists());
 		} catch (FileNotFoundException e) {
@@ -175,9 +191,9 @@ public class FileManagerTest {
 			
 		
 		try {
-			fM.submitFile("SENG301", 4, true, "C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Test\\TestDownloadAllSubmittedFiles" +
+			fM.submitFile("SENG301", 4, true, "..\\Test\\TestDownloadAllSubmittedFiles" +
 					"\\Late\\Student1-LoginListNonEncryptSubmitTest.txt", "Student1");
-			x = new File("C:\\Users\\Franky\\Desktop\\3rd year\\Fall\\SENG301\\assign4\\Assignment4\\res\\Admin\\SENG301\\4\\Late" +
+			x = new File("..\\Assignment4\\res\\Admin\\SENG301\\4\\Late" +
 					"\\Student1-Student1-LoginListNonEncryptSubmitTest.txt");
 			assertTrue(x.exists());
 		} catch (FileNotFoundException e) {
