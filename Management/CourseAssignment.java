@@ -22,7 +22,7 @@ public class CourseAssignment implements DBMSAccessor
 	 *
 	 * Creates a new, empty CourseAssignment for use
 	 */
-	public CourseAssignment()
+	/*public CourseAssignment()
 	{
 		c = null;
 		description = "";
@@ -32,7 +32,7 @@ public class CourseAssignment implements DBMSAccessor
 		gradesVisable = false;
 		commentVisable = false;
 	}
-
+*/
 
 
 

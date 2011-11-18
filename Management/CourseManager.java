@@ -216,7 +216,7 @@ public class CourseManager implements DBMSAccessor
 	public Course getCourse(String courseName){
 		for( int i = 0; i < c.size(); i++ )
 		{
-			if(c.elementAt(i).getCourseName() == courseName)
+			if(c.elementAt(i).getCourseName().compareTo(courseName)==0)
 				return c.elementAt(i);
 		}
 

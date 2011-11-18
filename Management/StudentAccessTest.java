@@ -24,21 +24,21 @@ public class StudentAccessTest {
 	public static void setUpBeforeClass() throws Exception {
 	
 	File x = new File("./res/TaList.txt");	
-	BufferedWriter out = new BufferedWriter( new FileWriter( x, true /* append */ ) );
+	BufferedWriter out = new BufferedWriter( new FileWriter( x ) );
 	if(x.exists())
 		x.delete();
 	
 		out.write("TA1\tSENG301\tAdmin\n");
 		out.close();
 	x = new File("./res/InstructorList.txt");	
-	out = new BufferedWriter( new FileWriter( x, true /* append */ ) );
+	out = new BufferedWriter( new FileWriter( x) );
 	if(x.exists())
 		x.delete();
 		
 		out.write("Admin\tSENG301\n");
 		out.close();
-	x = new File("./res/Student1List.txt");	
-	out = new BufferedWriter( new FileWriter( x, true /* append */ ) );
+	x = new File("./res/StudentList.txt");	
+	out = new BufferedWriter( new FileWriter( x ) );
 	
 	if(x.exists())
 		x.delete();
@@ -47,21 +47,21 @@ public class StudentAccessTest {
 		out.close();
 	x = new File("./res/UserList.txt");	
 	
-	out = new BufferedWriter( new FileWriter( x, true /* append */ ) );
+	out = new BufferedWriter( new FileWriter( x ) );
 	if(x.exists())
 		x.delete();
 	
-		out.write("Student1\tSENG301\tTA1\tSENG301\tAdmin\tSENG301\n");
+		out.write("Student1\tSENG301\nTA1\tSENG301\nAdmin\tSENG301\n");
 	out.close();
 	
 	x = new File("./res/Admin/SENG301/1/AssignmentList.txt");	
 	if(x.exists())
 		x.delete();
 	x = new File("./res/Admin/SENG301/AssignmentList.txt");
-	out = new BufferedWriter( new FileWriter( x, true /* append */ ) );
+	out = new BufferedWriter( new FileWriter( x	 ) );
 	if(x.exists())
 		x.delete();
-		out.write("1\ttrue\tTA1\ttrue\ttrue\tThisIsDescription\t" + Calendar.getInstance()+ "\r\n");
+		out.write("1\ttrue\ttrue\ttrue\tThisIsDescription\t" + Calendar.getInstance().getTimeInMillis()+ "\r\n");
 	out.close();
 	
 	}
